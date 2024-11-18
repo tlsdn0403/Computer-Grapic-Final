@@ -28,8 +28,6 @@ int robot_dir = 0;
 void drawScene();
 
 void make_cube(GLfloat x, GLfloat y, GLfloat z);
-void make_line();
-void frontOpen(int value);
 void walking(int value);
 void jumping(int value);
 void Reshape(int w, int h);
@@ -221,6 +219,7 @@ public:
         }
     }
 };
+//로봇의 팔 다리 얼굴 을 그리는 클래스들 
 class RobotLeg: public Shape {
 public:
     std::vector<std::vector<GLfloat>> faces; // 면을 저장 
@@ -647,134 +646,9 @@ public:
         }
     }
 };
-class ObstacleShape : public Shape {
-public:
-    std::vector<std::vector<GLfloat>> faces; // 면을 저장 
-    std::vector<std::vector<GLfloat>> vertexColors;//색을 저장 하는 벡터
-    GLfloat frontRotatingAngel = 0.0f;
-    ObstacleShape() {
-        faces.resize(6); // 6개의 면을 위한 공간 할당
-        vertexColors.resize(6);
-    }
-    void generateFaces() {
-
-        // 각 면의 정점 데이터를 초기화
-        // Front Face (Z+)
-        faces[0] = {  // 바닥
-        position[0] - size, position[1] - size , position[2] + size,  // v1 (Top-left)
-        position[0] + size, position[1] - size , position[2] + size,  // v2 (Top-right)
-        position[0] - size, position[1] - size , position[2] - size,  // v3 (Bottom-left)
-        position[0] + size, position[1] - size , position[2] - size   // v4 (Bottom-right)
-        };
-
-        vertexColors[0] = {
-            0.0f, 0.0f, 0.0f,  // v1 (Red)
-           0.0f, 0.0f, 0.0f,  // v2 (Green)
-            0.0f, 0.0f, 0.0f,  // v3 (Blue)
-           0.0f, 0.0f, 0.0f  // v4 (Yellow)
-        };
-        faces[1] = {  // 오 옆면
-        position[0] + size, position[1] - size , position[2] + size,  // v1 (Top-left)
-        position[0] + size, position[1] - size, position[2] - size,  // v2 (Top-right)
-        position[0] + size, position[1] + size , position[2] + size,  // v3 (Bottom-left)
-        position[0] + size, position[1] + size , position[2] - size   // v4 (Bottom-right)
-        };
-
-        // Corresponding color data for each vertex (adjust as needed)
-        vertexColors[1] = {
-             0.0f, 0.0f, 0.0f,  // v1 (Red)
-           0.0f, 0.0f, 0.0f,  // v2 (Green)
-            0.0f, 0.0f, 0.0f,  // v3 (Blue)
-           0.0f, 0.0f, 0.0f  // v4 (Yellow)
-        };
-        faces[2] = {  // 앞면
-        position[0] - size, position[1] - size , position[2] + size,  // v1 (Top-left)
-        position[0] + size, position[1] - size, position[2] + size,  // v2 (Top-right)
-        position[0] - size, position[1] + size , position[2] + size,  // v3 (Bottom-left)
-        position[0] + size, position[1] + size , position[2] + size   // v4 (Bottom-right)
-        };
-
-        // Corresponding color data for each vertex (adjust as needed)
-        vertexColors[2] = {
-             0.0f, 0.0f, 0.0f,  // v1 (Red)
-           0.0f, 0.0f, 0.0f,  // v2 (Green)
-            0.0f, 0.0f, 0.0f,  // v3 (Blue)
-           0.0f, 0.0f, 0.0f  // v4 (Yellow)
-        };
-        faces[3] = {  // 오 옆면
-        position[0] - size, position[1] - size, position[2] + size,  // v1 (Top-left)
-        position[0] - size, position[1] - size, position[2] - size,  // v2 (Top-right)
-        position[0] - size, position[1] + size , position[2] + size,  // v3 (Bottom-left)
-        position[0] - size, position[1] + size , position[2] - size   // v4 (Bottom-right)
-        };
-
-        // Corresponding color data for each vertex (adjust as needed)
-        vertexColors[3] = {
-             0.0f, 0.0f, 0.0f,  // v1 (Red)
-           0.0f, 0.0f, 0.0f,  // v2 (Green)
-            0.0f, 0.0f, 0.0f,  // v3 (Blue)
-           0.0f, 0.0f, 0.0f  // v4 (Yellow)
-        };
-        faces[4] = {  // 뒷면
-        position[0] - size, position[1] - size, position[2] - size,  // v1 (Top-left)
-        position[0] + size, position[1] - size, position[2] - size,  // v2 (Top-right)
-        position[0] - size, position[1] + size , position[2] - size,  // v3 (Bottom-left)
-        position[0] + size, position[1] + size , position[2] - size   // v4 (Bottom-right)
-        };
-
-        // Corresponding color data for each vertex (adjust as needed)
-        vertexColors[4] = {
-             0.0f, 0.0f, 0.0f,  // v1 (Red)
-           0.0f, 0.0f, 0.0f,  // v2 (Green)
-            0.0f, 0.0f, 0.0f,  // v3 (Blue)
-           0.0f, 0.0f, 0.0f  // v4 (Yellow)
-        };
-        faces[5] = {  // 윗면
-        position[0] - size, position[1] + size, position[2] + size,  // v1 (Top-left)
-        position[0] + size, position[1] + size , position[2] + size,  // v2 (Top-right)
-        position[0] - size, position[1] + size , position[2] - size,  // v3 (Bottom-left)
-        position[0] + size, position[1] + size, position[2] - size   // v4 (Bottom-right)
-        };
-
-        vertexColors[5] = {
-             0.0f, 0.0f, 0.0f,  // v1 (Red)
-           0.0f, 0.0f, 0.0f,  // v2 (Green)
-            0.0f, 0.0f, 0.0f,  // v3 (Blue)
-           0.0f, 0.0f, 0.0f  // v4 (Yellow)
-        };
-
-
-    }
-    void draw(GLuint shaderProgramID, GLuint vbo[]) {
-        for (int i = 0; i < 6; i++) {
-            if (i >= faces.size()) {
-                std::cerr << "Error: faces vector index out of range." << std::endl;
-                continue;
-            }
-            glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, faces[i].size() * sizeof(GLfloat), faces[i].data());
-            glBindBuffer(GL_ARRAY_BUFFER, vbo[1]); // vbo[1]에 색상 정보 저장
-            glBufferSubData(GL_ARRAY_BUFFER, 0, vertexColors[i].size() * sizeof(GLfloat), vertexColors[i].data());
 
 
 
-            glm::mat4 Tx = glm::mat4(1.0f);
-            Tx = glm::translate(Tx, glm::vec3(0.0, 0.0, 0.0)); // 이동행렬
-            GLuint mvpLocation = glGetUniformLocation(shaderProgramID, "uMVP");
-
-            glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(Tx));
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); // Draw the face using four vertice
-        }
-    }
-};
-
-
-struct obstacle {
-    GLfloat posittion[3];
-};
-obstacle ob_1;
-obstacle ob_2;
-obstacle ob_3;
 GLchar* vertexSource, * fragmentSource;
 GLuint vertexShader, fragmentShader;
 GLuint shaderProgramID;
@@ -820,7 +694,6 @@ int main(int argc, char** argv) {
     //--- Register callback functions
 
     drawObjects();
-
     glutDisplayFunc(drawScene);
     glutReshapeFunc(Reshape);
     glutKeyboardFunc(Keyboard);
@@ -853,7 +726,8 @@ void drawScene() {
     unsigned int viewLocation = glGetUniformLocation(shaderProgramID, "viewTransform");
     glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
 
-    for (auto shape : shapes) {
+
+    for (auto shape : shapes) {  // shapes 벡터에 저장한 도형들을 모두 그리는 거  (각 도형 클래스마다 draw 함수를 넣어놨음)
         shape->draw(shaderProgramID, vboArr);
     }
 
@@ -981,48 +855,6 @@ void make_fragmentShaders() {
 
 
 void make_cube(GLfloat x, GLfloat y, GLfloat z) {
-    Shape* newShape = new CubeShape();
-    newShape->position[0] = x;
-    newShape->position[1] = y;
-    newShape->position[2] = z;
-    newShape->size = 1.0f;
-    newShape->generateFaces(); // 정점 데이터 초기화
-    shapes.push_back(newShape);
-
-    Shape* newShape_2 = new ObstacleShape();
-    newShape_2->position[0] = x+0.4;
-    newShape_2->position[1] = y-1.0f;
-    newShape_2->position[2] = z+0.4;
-    newShape_2->size = 0.2f;
-    newShape_2->generateFaces(); // 정점 데이터 초기화
-    shapes.push_back(newShape_2);
-    ob_1.posittion[0] = newShape_2->position[0];
-    ob_1.posittion[1] = newShape_2->position[1];
-    ob_1.posittion[2] = newShape_2->position[2];
-
-    Shape* newShape_3 = new ObstacleShape();
-    newShape_3->position[0] = x - 0.7;
-    newShape_3->position[1] = y - 1.0f;
-    newShape_3->position[2] = z + 0.4;
-    newShape_3->size = 0.2f;
-    newShape_3->generateFaces(); // 정점 데이터 초기화
-    shapes.push_back(newShape_3);
-
-    ob_2.posittion[0] = newShape_3->position[0];
-    ob_2.posittion[1] = newShape_3->position[1];
-    ob_2.posittion[2] = newShape_3->position[2];
-
-    Shape* newShape_4 = new ObstacleShape();
-    newShape_4->position[0] = x - 0.5;
-    newShape_4->position[1] = y - 1.0f;
-    newShape_4->position[2] = z - 0.5;
-    newShape_4->size = 0.2f;
-    newShape_4->generateFaces(); // 정점 데이터 초기화
-    shapes.push_back(newShape_4);
-
-    ob_3.posittion[0] = newShape_4->position[0];
-    ob_3.posittion[1] = newShape_4->position[1];
-    ob_3.posittion[2] = newShape_4->position[2];
   
     glutPostRedisplay();
 }
@@ -1034,11 +866,6 @@ void Keyboard(unsigned char key, int x, int y) {
     switch (key)
     {
 
-    case'o': {
-        frontFaceOpen = !frontFaceOpen;
-        glutTimerFunc(60, frontOpen, 0);
-        break;
-    }
     case'w': {
         isWalking = !isWalking;
         robot_dir = 8;
@@ -1046,24 +873,13 @@ void Keyboard(unsigned char key, int x, int y) {
         glutPostRedisplay();
         break;
     }
-    case's': {
-        isWalking = !isWalking;
-        robot_dir = 2;
-        glutTimerFunc(12, walking, 0);
-        glutPostRedisplay();
-        break;
-    }
     case'a': {
-        isWalking = !isWalking;
-        robot_dir = 4;
-        glutTimerFunc(12, walking, 0);
+        movingX -= 0.1f;
         glutPostRedisplay();
         break;
     }
     case'd': {
-        isWalking = !isWalking;
-        robot_dir = 6;
-        glutTimerFunc(12, walking, 0);
+        movingX += 0.1f;
         glutPostRedisplay();
         break;
     }
@@ -1095,17 +911,6 @@ void Keyboard(unsigned char key, int x, int y) {
         cameraZ = 0;
         break;
     }
-    case'=':{
-        speed += 0.001f;
-        break;                    
-    }
-    case'-': {
-        speed -= 0.001f;
-        if (speed <= 0.005f) {
-            speed = 0.005f;
-        }
-        break;
-    }
     case'j':{
         isJumping = true;
         glutTimerFunc(12, jumping, 0);
@@ -1118,7 +923,7 @@ void Keyboard(unsigned char key, int x, int y) {
 }
 
 
-void make_clane(GLfloat x, GLfloat y, GLfloat z) {
+void make_robot(GLfloat x, GLfloat y, GLfloat z) {
     Shape* newShape = new RobotBody(); //아래몸체
     newShape->position[0] = x;
     newShape->position[1] = y-0.4f;
@@ -1192,103 +997,21 @@ void make_clane(GLfloat x, GLfloat y, GLfloat z) {
    
     glutPostRedisplay();
 }
-void frontOpen(int value) {
-    if (!frontFaceOpen) {
-        return;
-    }
-    frontFaceAngel += 1.0f;
-    if (frontFaceAngel >= 90.0f) {
-        frontFaceAngel = 90.0f;  // Reset to avoid overflow
-        return;
-    }
-    glutPostRedisplay();
-    glutTimerFunc(12, frontOpen, 0);
-}
 void walking(int value) {
     if (!isWalking) {
         return;
     }
-    if (robot_dir == 6) {
-        rotationAngleY += 10.0f;
-        if (rotationAngleY >= 90) { //오른쪽 이동
-            rotationAngleY = 90;
-            movingX += speed;
-            if (value == 0) {
-                rotationAngleZ += speed * 100.0f;
-            }
-            else if (value == 1) {
-                rotationAngleZ -= speed * 100.0f;
-            }
-            if (movingX >= 0.9f) {
-                robot_dir = 4;
-            }
-        }
+    rotationAngleZ = 0.0f;
+    rotationAngleY += 10.0f;
+    if (rotationAngleY >= 180) {
+        rotationAngleY = 180;
     }
-    else if (robot_dir == 4) {  //왼쪽 이동
-       
-        rotationAngleY -= 10.0f;
-        if (rotationAngleY <= -90) {
-            rotationAngleY = -90;
-            movingX -= speed;
-            if (value == 0) {
-                rotationAngleZ += speed * 100.0f;
-            }
-            else if (value == 1) {
-                rotationAngleZ -= speed * 100.0f;
-                
-            }
-            if (movingX <= -0.9f) {
-                robot_dir = 6;
-            }
-        }
+    if (value == 0) {
+        rotationAngleX += speed * 200.0f;
     }
-    else if (robot_dir == 2) { //아래로 이동
-        rotationAngleZ = 0.0f;
-        if (rotationAngleY >= 0) {
-            rotationAngleY -= 10.0f;
-            if (rotationAngleY <= 0) {
-                rotationAngleY = 0;
-                movingZ += speed;
-            }
-        }
-        else if (rotationAngleY <= 0) {
-            rotationAngleY += 10.0f;
-            if (rotationAngleY >= 0) {
-                rotationAngleY = 0;
-                movingZ += speed;
-            }
-        }
-        if (value == 0) {
-            rotationAngleX += speed * 100.0f;
-        }
-        else if (value == 1) {
-            rotationAngleX -= speed * 100.0f;
-
-        }
-        if (movingZ >= 0.9f) {
-            robot_dir = 8;
-        }
+    else if (value == 1) {
+        rotationAngleX -= speed * 200.0f;
     }
-    else if (robot_dir == 8) { //아래로 이동
-        rotationAngleZ = 0.0f;
-        
-            rotationAngleY += 10.0f;
-            if (rotationAngleY >= 180) {
-                rotationAngleY = 180;
-                movingZ -= speed;
-            }
-        if (value == 0) {
-            rotationAngleX += speed*100.0f;
-        }
-        else if (value == 1) {
-            rotationAngleX -= speed * 100.0f;
-
-        }
-        if (movingZ <= -0.9f) {
-            robot_dir = 2;
-        }
-    }
-
     if (rotationAngleZ >= 30||rotationAngleX>=30) {
         value = 1;
     }
@@ -1303,34 +1026,26 @@ void jumping(int value) {
         return;
     }
     if (value == 0) {
+        //로봇 점프
         movingY += 0.01f;
         if (movingY >= 0.5f) {
+            //로봇의 y좌표가 일정좌표이면 추락하도록(점프 끝)
             value = 1;
         }
     }
     else {
+        //착지
         movingY -= 0.01f;
-        if ( ((movingX >= ob_1.posittion[0] - 0.2f && movingX <= ob_1.posittion[0] + 0.2f) && (movingZ >= ob_1.posittion[2] - 0.2f && movingZ <= ob_1.posittion[2] + 0.2f))||
-            ((movingX >= ob_2.posittion[0] - 0.2f && movingX <= ob_2.posittion[0] + 0.2f) && (movingZ >= ob_2.posittion[2] - 0.2f && movingZ <= ob_2.posittion[2] + 0.2f))||
-            ((movingX >= ob_3.posittion[0] - 0.2f && movingX <= ob_3.posittion[0] + 0.2f) && (movingZ >= ob_3.posittion[2] - 0.2f && movingZ <= ob_3.posittion[2] + 0.2f))  ) {
-            std::cout << "obs";
-            if (movingY <= 0.2f) {
-                movingY = 0.2f;
-            }
-        }
-        else {
-            if (movingY <= 0.0f) {
-                movingY = 0;
-                isJumping = 0;
-            }
-        }
-        
+        if (movingY <= 0.0f) {
+            movingY = 0;
+            isJumping = 0;
+        } 
     }
     glutPostRedisplay();
     glutTimerFunc(12, jumping, value);
 }
 
-void Cleanup() {
+void Cleanup() { //일단 지금은 안쓰임 
     // 할당된 Shape 객체 삭제
     for (auto shape : shapes) {
         delete shape;
@@ -1338,9 +1053,9 @@ void Cleanup() {
     shapes.clear();
 }
 void drawObjects() {
-    // Draw cube, pyramid, and line
+    // 오브젝트들 그리는 함수
     make_cube(0, 0, 0);
-    make_clane(0, 0, 0);
+    make_robot(0, 0, 0);
 }
 
 
