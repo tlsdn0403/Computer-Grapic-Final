@@ -997,7 +997,7 @@ void make_robot(GLfloat x, GLfloat y, GLfloat z) {
    
     glutPostRedisplay();
 }
-void walking(int value) {
+void walking(int value) { //·Îº¿ °È´Â ÇÔ¼ö
     if (!isWalking) {
         return;
     }
