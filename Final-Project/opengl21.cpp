@@ -9,6 +9,7 @@
 #include <random>
 #include <fstream>
 #include <vector>
+#include"shape.h"
 
 bool projection, rotate_mid, rotateBarrel, rotateArm , frontFaceOpen,isWalking,isJumping = false;
 bool isDepthTest = false;
@@ -60,22 +61,6 @@ char* filetobuf(const char* file) {
     buf[length] = 0;
     return buf;
 }
-class Shape {
-public:
-    virtual void draw(GLuint shaderProgramID, GLuint vbo[]) = 0;
-    virtual void generateFaces() = 0;
-    void applyTopFaceTransformation(glm::mat4 Tx, int index) {
-
-    }
-    virtual ~Shape() {}
-    GLfloat position[6];
-    GLfloat color[3];
-    GLfloat size;
-    int num;
-    std::vector<std::vector<GLfloat>> faces; // 6개의 면을 저장
-    std::vector<std::vector<GLfloat>> vertexColors;//색을 저장 하는 벡터
-
-};
 
 class CubeShape : public Shape {
 public:
