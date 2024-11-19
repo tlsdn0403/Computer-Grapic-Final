@@ -19,10 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CubeShape.cpp" />
     <ClCompile Include="opengl21.cpp" />
-    <ClCompile Include="shape.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CubeShape.h" />
     <ClInclude Include="shape.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

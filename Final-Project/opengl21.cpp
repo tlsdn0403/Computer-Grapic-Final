@@ -10,10 +10,11 @@
 #include <fstream>
 #include <vector>
 #include"shape.h"
+#include"CubeShape.h"
 
 bool projection, rotate_mid, rotateBarrel, rotateArm , frontFaceOpen,isWalking,isJumping = false;
 bool isDepthTest = false;
-GLfloat rotationAngleX, frontFaceAngel = 0;
+GLfloat rotationAngleX = 0;
 GLfloat rotationBarrelAngle, rotationArmAngle = 0;
 GLfloat rotateMiddle = 0;
 GLfloat movingX = 0;
@@ -61,149 +62,6 @@ char* filetobuf(const char* file) {
     buf[length] = 0;
     return buf;
 }
-
-class CubeShape : public Shape {
-public:
-    std::vector<std::vector<GLfloat>> faces; // 면을 저장 
-    std::vector<std::vector<GLfloat>> vertexColors;//색을 저장 하는 벡터
-    GLfloat frontRotatingAngel = 0.0f;
-    CubeShape() {
-        faces.resize(6); // 6개의 면을 위한 공간 할당
-        vertexColors.resize(6);
-    }
-    void generateFaces() {
-
-        // 각 면의 정점 데이터를 초기화
-        // Front Face (Z+)
-        faces[0] = {  // 바닥
-        position[0] - size, position[1] -size , position[2] + size,  // v1 (Top-left)
-        position[0] + size, position[1] - size , position[2] + size,  // v2 (Top-right)
-        position[0] - size, position[1] - size , position[2] - size,  // v3 (Bottom-left)
-        position[0] + size, position[1] - size , position[2] - size   // v4 (Bottom-right)
-        };
-
-        vertexColors[0] = {
-            1.0f, 1.0f, 1.0f,  // v1 (Red)
-           1.0f, 1.0f, 1.0f,  // v2 (Green)
-            1.0f, 1.0f, 1.0f,  // v3 (Blue)
-           1.0f, 1.0f, 1.0f  // v4 (Yellow)
-        };
-        faces[1] = {  // 오 옆면
-        position[0] + size, position[1] - size , position[2] + size,  // v1 (Top-left)
-        position[0] + size, position[1] - size, position[2] - size,  // v2 (Top-right)
-        position[0] + size, position[1] + size , position[2] + size,  // v3 (Bottom-left)
-        position[0] + size, position[1] + size , position[2] - size   // v4 (Bottom-right)
-        };
-
-        // Corresponding color data for each vertex (adjust as needed)
-        vertexColors[1] = {
-            1.0f, 1.0f, 0.0f,  // v1 (Red)
-            1.0f, 1.0f, 0.0f,  // v2 (Green)
-            1.0f, 1.0f, 0.0f,  // v3 (Blue)
-            1.0f, 1.0f, 0.0f   // v4 (Yellow)
-        };
-        faces[2] = {  // 앞면
-        position[0] - size, position[1] - size , position[2] + size,  // v1 (Top-left)
-        position[0] + size, position[1] - size, position[2] + size,  // v2 (Top-right)
-        position[0] - size, position[1] + size , position[2] + size,  // v3 (Bottom-left)
-        position[0] + size, position[1] + size , position[2] + size   // v4 (Bottom-right)
-        };
-
-        // Corresponding color data for each vertex (adjust as needed)
-        vertexColors[2] = {
-            1.0f, 0.0f, 1.0f,  // v1 (Red)
-            1.0f, 0.0f, 1.0f,  // v2 (Green)
-            1.0f, 0.0f, 1.0f,  // v3 (Blue)
-            1.0f, 0.0f, 1.0f   // v4 (Yellow)
-        };
-        faces[3] = {  // 오 옆면
-        position[0] - size, position[1] - size, position[2] + size,  // v1 (Top-left)
-        position[0] - size, position[1] - size, position[2] - size,  // v2 (Top-right)
-        position[0] - size, position[1] + size , position[2] + size,  // v3 (Bottom-left)
-        position[0] - size, position[1] + size , position[2] - size   // v4 (Bottom-right)
-        };
-
-        // Corresponding color data for each vertex (adjust as needed)
-        vertexColors[3] = {
-            0.0f, 1.0f, 1.0f,  // v1 (Red)
-            0.0f, 1.0f, 1.0f,  // v2 (Green)
-            0.0f, 1.0f, 1.0f,  // v3 (Blue)
-            0.0f, 1.0f, 1.0f   // v4 (Yellow)
-        };
-        faces[4] = {  // 뒷면
-        position[0] - size, position[1] - size, position[2] - size,  // v1 (Top-left)
-        position[0] + size, position[1] - size, position[2] - size,  // v2 (Top-right)
-        position[0] - size, position[1] + size , position[2] - size,  // v3 (Bottom-left)
-        position[0] + size, position[1] + size , position[2] - size   // v4 (Bottom-right)
-        };
-
-        // Corresponding color data for each vertex (adjust as needed)
-        vertexColors[4] = {
-            1.0f, 0.0f, 0.0f,  // v1 (Red)
-            1.0f, 0.0f, 0.0f,  // v2 (Green)
-            1.0f, 0.0f, 0.0f,  // v3 (Blue)
-            1.0f, 0.0f, 0.0f   // v4 (Yellow)
-        };
-        faces[5] = {  // 윗면
-        position[0] - size, position[1] + size, position[2] + size,  // v1 (Top-left)
-        position[0] + size, position[1] + size , position[2] + size,  // v2 (Top-right)
-        position[0] - size, position[1] + size , position[2] - size,  // v3 (Bottom-left)
-        position[0] + size, position[1] + size, position[2] - size   // v4 (Bottom-right)
-        };
-
-        vertexColors[5] = {
-            0.0f, 1.0f, 0.0f,  // v1 (Red)
-            0.0f, 1.0f, 0.0f,  // v2 (Green)
-            0.0f, 1.0f, 0.0f,  // v3 (Blue)
-            0.0f, 1.0f, 0.0f   // v4 (Yellow)
-        };
-
-
-    }
-    void draw(GLuint shaderProgramID, GLuint vbo[]) {
-        for (int i = 0; i < 6; i++) {
-            if (i >= faces.size()) {
-                std::cerr << "Error: faces vector index out of range." << std::endl;
-                continue;
-            }
-            glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, faces[i].size() * sizeof(GLfloat), faces[i].data());
-            glBindBuffer(GL_ARRAY_BUFFER, vbo[1]); // vbo[1]에 색상 정보 저장
-            glBufferSubData(GL_ARRAY_BUFFER, 0, vertexColors[i].size() * sizeof(GLfloat), vertexColors[i].data());
-
-            
-
-            glm::mat4 Tx = glm::mat4(1.0f);
-            Tx = glm::translate(Tx, glm::vec3(0.0 , 0.0, 0.0)); // 이동행렬
-
-
-
-            glm::mat4 Rz = glm::mat4(1.0f);
-            Rz = glm::rotate(Rz, glm::radians(10.0f), glm::vec3(1.00, 0.00, 0.0)); //기본적인 회전 행렬
-
-            glm::mat4 Ry = glm::mat4(1.0f);
-            Ry = glm::rotate(Ry, glm::radians(rotateMiddle), glm::vec3(0.00, 1.00, 0.0)); //기본적인 회전 행렬
-
-
-            glm::mat4 TR = glm::mat4(1.0f);
-            TR = Tx * Rz;
-            glm::mat4 modelMatrix = Tx;
-            if (i == 2 && (frontFaceOpen == true )) {  // Apply front face opening rotation
-                frontRotatingAngel = frontFaceAngel;
-                glm::mat4 translateToEdge = glm::translate(glm::mat4(1.0f), glm::vec3(0,-size , size));
-                glm::mat4 translateBack = glm::translate(glm::mat4(1.0f), glm::vec3(0, +size, -size));
-
-                glm::mat4 Rz_FRONT = glm::rotate(glm::mat4(1.0f), glm::radians(frontRotatingAngel), glm::vec3(1.0f, 0.0f, 0.0f));
-
-                modelMatrix = Tx * translateToEdge * Rz_FRONT * translateBack;
-            }
-            GLuint mvpLocation = glGetUniformLocation(shaderProgramID, "uMVP");
-            
-            glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); // Draw the face using four vertice
-        }
-    }
-};
 //로봇의 팔 다리 얼굴 을 그리는 클래스들 
 class RobotLeg: public Shape {
 public:
@@ -840,6 +698,13 @@ void make_fragmentShaders() {
 
 
 void make_cube(GLfloat x, GLfloat y, GLfloat z) {
+    Shape* newShape = new CubeShape();
+    newShape->position[0] = x;
+    newShape->position[1] = y;
+    newShape->position[2] = z;
+    newShape->size = 0.5f;
+    newShape->generateFaces(); // 정점 데이터 초기화
+    shapes.push_back(newShape);
   
     glutPostRedisplay();
 }
