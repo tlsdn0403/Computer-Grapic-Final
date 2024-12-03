@@ -15,10 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="opengl21.cpp">
+    <ClCompile Include="FinalProject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CubeShape.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="RobotLeg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FenceShape.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -27,6 +33,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CubeShape.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RobotLeg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="FenceShape.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,10 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeShape.cpp" />
-    <ClCompile Include="opengl21.cpp" />
+    <ClCompile Include="FenceShape.cpp" />
+    <ClCompile Include="FinalProject.cpp" />
+    <ClCompile Include="RobotLeg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeShape.h" />
+    <ClInclude Include="FenceShape.h" />
+    <ClInclude Include="RobotLeg.h" />
     <ClInclude Include="shape.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
