@@ -701,8 +701,8 @@ void make_cube(GLfloat x, GLfloat y, GLfloat z) {
     Shape* newShape = new CubeShape();
     newShape->position[0] = x;
     newShape->position[1] = y;
-    newShape->position[2] = z;
-    newShape->size = 0.5f;
+    newShape->position[2] = -3.0f;
+    newShape->size = 0.2f;
     newShape->generateFaces(); // 정점 데이터 초기화
     shapes.push_back(newShape);
   
