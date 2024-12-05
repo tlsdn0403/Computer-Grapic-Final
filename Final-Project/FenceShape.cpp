@@ -8,7 +8,7 @@ FenceShape::FenceShape() {
     moving_fence_X = 1.0f;
     moving_fence_Y = .0f;
     moving_fence_Z = 0.0f;
-    size = 0.1f; // Default size
+    size = 0.05f; // Default size
     width = 0.3f;
     position = glm::vec3(0.0f);
     color = glm::vec3(1.0f); // Default white color
