@@ -30,6 +30,10 @@
     <ClInclude Include="RobotLeg.h" />
     <ClInclude Include="shape.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="fragment.glsl" />
+    <None Include="vertex.glsl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

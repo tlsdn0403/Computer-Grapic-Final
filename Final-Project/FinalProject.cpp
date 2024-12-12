@@ -1,10 +1,12 @@
 #define _CRT_SECURE_NO_WARNINGS
+#define STB_IMAGE_IMPLEMENTATION
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include<gl/glm/glm/glm.hpp>
 #include<gl/glm/glm/ext.hpp>
 #include<gl/glm/glm/gtc/matrix_transform.hpp>
+#include"stb_image.h"
 #include <cstdlib>
 #include <random>
 #include <fstream>
@@ -13,8 +15,11 @@
 #include"CubeShape.h"
 #include"FenceShape.h"
 
+
 bool projection, rotate_mid, rotateBarrel, rotateArm , frontFaceOpen,isWalking,isJumping = false;
 bool isDepthTest = false;
+
+GLuint textureID[10];
 GLfloat rotationAngleX = 0;
 GLfloat rotationBarrelAngle, rotationArmAngle = 0;
 GLfloat rotateMiddle = 0;
@@ -29,7 +34,7 @@ GLfloat cameraX = 0;
 GLfloat speed = 0.01f;
 int robot_dir = 0;
 void drawScene();
-
+void initTextures(GLuint shaderProgramID);
 void make_cube(GLfloat x, GLfloat y, GLfloat z);
 void walking(int value);
 void jumping(int value);
@@ -40,6 +45,7 @@ void make_shaderProgram();
 void make_vertexShaders();
 void make_fragmentShaders();
 void Keyboard(unsigned char key, int x, int y);
+void loadTexture(GLuint textureID, const char* filePath, GLenum textureUnit, const char* uniformName, GLuint shaderProgramID);
 void Cleanup();
 void getOpenGLMouseCoords(int mouseX, int mouseY, float& openglX, float& openglY) {
     openglX = (static_cast<float>(mouseX) / glutGet(GLUT_WINDOW_WIDTH)) * 2.0f - 1.0f; //X
@@ -167,6 +173,7 @@ public:
                 std::cerr << "Error: faces vector index out of range." << std::endl;
                 continue;
             }
+            glUniform1i(glGetUniformLocation(shaderProgramID, "selectedTexture"), 11);
             glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
             glBufferSubData(GL_ARRAY_BUFFER, 0, faces[i].size() * sizeof(GLfloat), faces[i].data());
             glBindBuffer(GL_ARRAY_BUFFER, vbo[1]); // vbo[1]에 색상 정보 저장         
@@ -327,6 +334,7 @@ public:
                 std::cerr << "Error: faces vector index out of range." << std::endl;
                 continue;
             }
+            glUniform1i(glGetUniformLocation(shaderProgramID, "selectedTexture"), 11);
             glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
             glBufferSubData(GL_ARRAY_BUFFER, 0, faces[i].size() * sizeof(GLfloat), faces[i].data());
             glBindBuffer(GL_ARRAY_BUFFER, vbo[1]); // vbo[1]에 색상 정보 저장         
@@ -460,6 +468,7 @@ public:
                 std::cerr << "Error: faces vector index out of range." << std::endl;
                 continue;
             }
+            glUniform1i(glGetUniformLocation(shaderProgramID, "selectedTexture"), 11);
             glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
             glBufferSubData(GL_ARRAY_BUFFER, 0, faces[i].size() * sizeof(GLfloat), faces[i].data());
             glBindBuffer(GL_ARRAY_BUFFER, vbo[1]); // vbo[1]에 색상 정보 저장         
@@ -496,8 +505,9 @@ public:
 GLchar* vertexSource, * fragmentSource;
 GLuint vertexShader, fragmentShader;
 GLuint shaderProgramID;
-GLuint vao, vboArr[2];
+GLuint vao, vboArr[3];
 std::vector<Shape*> shapes;
+std::vector<FenceShape*> Fence_shapes;
 std::vector<Shape*> shapes_line;
 
 bool drawWireframe = false;
@@ -538,6 +548,7 @@ int main(int argc, char** argv) {
     //--- Register callback functions
 
     drawObjects();
+    initTextures(shaderProgramID);
     glutDisplayFunc(drawScene);
     glutReshapeFunc(Reshape);
     glutKeyboardFunc(Keyboard);
@@ -548,6 +559,53 @@ int main(int argc, char** argv) {
     return 0;
 }
 
+void loadTexture(GLuint textureID, const char* filePath, GLenum textureUnit, const char* uniformName, GLuint shaderProgramID) {
+    // Activate the texture unit
+    glActiveTexture(textureUnit);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    // Set texture wrapping/filtering options
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // Load and generate texture
+    stbi_set_flip_vertically_on_load(true);
+    int width, height, nrChannels;
+    unsigned char* data = stbi_load(filePath, &width, &height, &nrChannels, 0);
+
+    if (data) {
+        GLenum format = (nrChannels == 4) ? GL_RGBA : GL_RGB;
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        std::cout << "Loaded texture: " << filePath << std::endl;
+    }
+    else {
+        std::cerr << "Failed to load texture: " << filePath << std::endl;
+    }
+
+    // Free image data
+    stbi_image_free(data);
+
+    // Set the texture uniform in the shader
+    glUseProgram(shaderProgramID);
+    GLint uniformLocation = glGetUniformLocation(shaderProgramID, uniformName);
+    if (uniformLocation != -1) {
+        glUniform1i(uniformLocation, textureUnit - GL_TEXTURE0); // Map texture unit to uniform
+    }
+    else {
+        std::cerr << "Uniform '" << uniformName << "' not found in shader!" << std::endl;
+    }
+}
+
+void initTextures(GLuint shaderProgramID) {
+    // Generate 10 texture IDs
+    glGenTextures(10, textureID);
+
+    // Load textures into the texture array
+    loadTexture(textureID[0], "Fence.png", GL_TEXTURE0, "Texture0", shaderProgramID);
+}
 
 void drawScene() {
     glClearColor(0.0, 0.0, 0.0, 1.0f);
@@ -574,7 +632,10 @@ void drawScene() {
     for (auto shape : shapes) {  // shapes 벡터에 저장한 도형들을 모두 그리는 거  (각 도형 클래스마다 draw 함수를 넣어놨음)
         shape->draw(shaderProgramID, vboArr);
     }
-
+    
+    for (auto shape : Fence_shapes) {  // 팬스 벡터에 저장한 도형들을 모두 그리는 거  (각 도형 클래스마다 draw 함수를 넣어놨음)
+        shape->draw(shaderProgramID, vboArr, textureID);
+    }
     glutSwapBuffers();
 }
 
@@ -590,7 +651,7 @@ void Reshape(int w, int h) {
 void InitBuffer() {
     glGenVertexArrays(1, &vao); //VAO 지정하고 할당
     glBindVertexArray(vao);  // VAO 바인드하기
-    glGenBuffers(2, vboArr); // 2개의 VBO 할당(유니폼으로 색상을 할당함으로 1개만 필요)
+    glGenBuffers(3, vboArr); // 2개의 VBO 할당(유니폼으로 색상을 할당함으로 1개만 필요)
 
 
     //posittion
@@ -603,6 +664,8 @@ void InitBuffer() {
     //--- 변수 colors에서 버텍스색상을복사한다.
     //--- colors 배열의 사이즈: 9 *float 
     glBufferData(GL_ARRAY_BUFFER, 108 * sizeof(GLfloat), NULL, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, vboArr[2]);
+    glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(GLfloat), NULL, GL_STATIC_DRAW);
     //--- 색상값을attribute 인덱스1번에명시한다: 버텍스당3*float
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
     //--- attribute 인덱스 1번을 사용가능하게함.
@@ -699,16 +762,13 @@ void make_fragmentShaders() {
 
 
 void make_cube(GLfloat x, GLfloat y, GLfloat z) {
-    Shape* newShape = new FenceShape();
+    FenceShape* newShape = new FenceShape();
     newShape->position[0] = x;
     newShape->position[1] = y;
-    newShape->position[2] = -2.0f;
-    newShape->color[0] = 1.0f;
-    newShape->color[1] = 0.0f;
-    newShape->color[2] = 0.0f;
+    newShape->position[2] = z;
     newShape->size = 0.2f;
     newShape->generateFaces(); // 정점 데이터 초기화
-    shapes.push_back(newShape);
+    Fence_shapes.push_back(newShape);
   
     glutPostRedisplay();
 }
@@ -908,7 +968,7 @@ void Cleanup() { //일단 지금은 안쓰임
 }
 void drawObjects() {
     // 오브젝트들 그리는 함수
-    make_cube(0, 0, 0);
+    make_cube(0, 0, -2.0);
     make_robot(0, 0, 0);
 }
 

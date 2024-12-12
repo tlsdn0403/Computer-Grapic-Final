@@ -1,7 +1,14 @@
 #include"FenceShape.h"
+
+
+void setSelectedTexture(GLuint shaderProgramID, int textureIndex) {
+    glUseProgram(shaderProgramID); // Activate the shader program
+    glUniform1i(glGetUniformLocation(shaderProgramID, "selectedTexture"), textureIndex);
+}
 FenceShape::FenceShape() {
     faces.resize(12); // Allocate space for 12 faces
     vertexColors.resize(12);
+    texCoords.resize(12);
     rotationAngleY = 0.0f;
     rotationAngleX = 0.0f;
     rotationAngleZ = 0.0f;
@@ -187,13 +194,91 @@ void FenceShape::generateFaces() {
         color[0], color[1], color[2],
         color[0], color[1], color[2]
     };
-
+    // 텍스처 좌표
+    texCoords[0] = {
+           0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[1] = {
+           0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[2] = {
+           0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[3] = {
+           0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[4] = {
+           0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[5] = {
+           0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[6] = {
+           0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[7] = {
+           0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[8] = {
+           0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[9] = {
+           0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[10] = {
+           0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[11] = {
+          0.0f , 0.0f , // 아래 왼쪽
+           1.0f ,  0.0f, // 아래 오른쪽
+           0.0f, 1.0f, // 위 왼쪽
+           1.0f , 1.0f , // 위 오른쪽
+    };
    
 
 
 }
 
-void FenceShape::draw(GLuint shaderProgramID, GLuint vbo[]) {
+void FenceShape::draw(GLuint shaderProgramID, GLuint vbo[], GLuint textureID[]) {
+    glUseProgram(shaderProgramID);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID[0]);
+    setSelectedTexture(shaderProgramID, 0);
+    glUniform1i(glGetUniformLocation(shaderProgramID, "Texture0"), 0);
+    glUniform1i(glGetUniformLocation(shaderProgramID, "selectedTexture"), 0);
     for (int i = 0; i < 12; i++) {
         if (i >= faces.size()) {
             std::cerr << "Error: faces vector index out of range." << std::endl;
@@ -201,9 +286,18 @@ void FenceShape::draw(GLuint shaderProgramID, GLuint vbo[]) {
         }
         glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
         glBufferSubData(GL_ARRAY_BUFFER, 0, faces[i].size() * sizeof(GLfloat), faces[i].data());
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(0);
+
         glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
         glBufferSubData(GL_ARRAY_BUFFER, 0, vertexColors[i].size() * sizeof(GLfloat), vertexColors[i].data());
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(1);
 
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, texCoords[i].size() * sizeof(GLfloat), texCoords[i].data());
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(2);
 
         glm::mat4 modelMatrix = createTransformMatrix();
 

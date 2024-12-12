@@ -8,10 +8,11 @@
 #include <vector>
 #include"shape.h"
 
-class FenceShape : public Shape {
+class FenceShape{
 public:
     std::vector<std::vector<GLfloat>> faces; // Stores face vertices
     std::vector<std::vector<GLfloat>> vertexColors; // Stores face colors
+    std::vector<std::vector<GLfloat>> texCoords;//텍스처를 저장 하는 벡터
 
     GLfloat rotationAngleY;
     GLfloat rotationAngleX;
@@ -27,7 +28,7 @@ public:
     FenceShape();
 
     void generateFaces();
-    void draw(GLuint shaderProgramID, GLuint vbo[]);
+    virtual void draw(GLuint shaderProgramID, GLuint vbo[], GLuint textureID[]);
 
 private:
     glm::mat4 createTransformMatrix();
