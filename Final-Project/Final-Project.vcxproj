@@ -25,6 +25,7 @@
     <ClCompile Include="FinalProject.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Food.cpp" />
+    <ClCompile Include="longFence.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="FenceShape.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Food.h" />
+    <ClInclude Include="longFence.h" />
     <ClInclude Include="shape.h" />
   </ItemGroup>
   <ItemGroup>

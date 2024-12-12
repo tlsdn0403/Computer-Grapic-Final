@@ -16,6 +16,8 @@
 #include"FenceShape.h"
 #include"Box.h"
 #include"Food.h"
+#include"Floor.h"
+#include"longFence.h"
 
 
 bool projection, rotate_mid, rotateBarrel, rotateArm , frontFaceOpen,isWalking,isJumping = false;
@@ -39,7 +41,9 @@ void drawScene();
 void initTextures(GLuint shaderProgramID);
 void make_Box(GLfloat x, GLfloat y, GLfloat z);
 void make_Fence(GLfloat x, GLfloat y, GLfloat z);
+void make_LongFence(GLfloat x, GLfloat y, GLfloat z);
 void make_Food(GLfloat x, GLfloat y, GLfloat z);
+void make_Floor(GLfloat x, GLfloat y, GLfloat z);
 void walking(int value);
 void jumping(int value);
 void Reshape(int w, int h);
@@ -514,6 +518,7 @@ std::vector<Shape*> shapes;
 std::vector<FenceShape*> Fence_shapes;
 std::vector<Box*> Box_shapes;
 std::vector<Food*> Food_shapes;
+std::vector<Floor*> Floor_shapes;
 
 std::vector<Shape*> shapes_line;
 
@@ -611,8 +616,9 @@ void initTextures(GLuint shaderProgramID) {
     glGenTextures(10, textureID);
 
     // Load textures into the texture array
-    loadTexture(textureID[0], "Fence.png", GL_TEXTURE0, "Texture0", shaderProgramID);
-    loadTexture(textureID[1], "chocopi.png", GL_TEXTURE1, "Texture1", shaderProgramID);
+    loadTexture(textureID[0], "Fence.png", GL_TEXTURE0, "Texture0", shaderProgramID); //펜스 사진
+    loadTexture(textureID[1], "chocopi.png", GL_TEXTURE1, "Texture1", shaderProgramID); //음식사진
+    loadTexture(textureID[2], "sky.jpg", GL_TEXTURE2, "Texture2", shaderProgramID); //바닥 사진 바꿀거면 sky.jpg대신 다른 사진 넣으면 됨
 
 }
 
@@ -649,6 +655,9 @@ void drawScene() {
         shape->draw(shaderProgramID, vboArr, textureID);
     }
     for (auto shape : Food_shapes) {  // 음식 
+        shape->draw(shaderProgramID, vboArr, textureID);
+    }
+    for (auto shape : Floor_shapes) {  // 바닥 
         shape->draw(shaderProgramID, vboArr, textureID);
     }
     glutSwapBuffers();
@@ -787,6 +796,17 @@ void make_Fence(GLfloat x, GLfloat y, GLfloat z) {
   
     glutPostRedisplay();
 }
+void make_LongFence(GLfloat x, GLfloat y, GLfloat z) {
+    longFence* newShape = new longFence();
+    newShape->position[0] = x;
+    newShape->position[1] = y;
+    newShape->position[2] = z;
+    newShape->size = 0.1f;
+    newShape->generateFaces(); // 정점 데이터 초기화
+    Fence_shapes.push_back(newShape);
+
+    glutPostRedisplay();
+}
 void make_Box(GLfloat x, GLfloat y, GLfloat z) {
     Box* newShape = new Box();
     newShape->position[0] = x;
@@ -804,13 +824,24 @@ void make_Food(GLfloat x, GLfloat y, GLfloat z) {
     newShape->position[0] = x;
     newShape->position[1] = y;
     newShape->position[2] = z;
-    newShape->size = 0.05f;
+    newShape->size = 0.05f; //사이즈 정해줄 수 있음
     newShape->generateFaces(); // 정점 데이터 초기화
     Food_shapes.push_back(newShape);
 
     glutPostRedisplay();
 }
+void make_Floor(GLfloat x, GLfloat y, GLfloat z) {
+    Floor* newShape = new Floor();
+    newShape->position[0] = x;
+    newShape->position[1] = y;
+    newShape->position[2] = z;
+    newShape->length = 3.0f;//바닥 길이 정해주기 (Z축 만 건들임)
+    newShape->size = 3; //사이즈 정해줄 수 있음
+    newShape->generateFaces(); // 정점 데이터 초기화
+    Floor_shapes.push_back(newShape);
 
+    glutPostRedisplay();
+}
 void Keyboard(unsigned char key, int x, int y) {
 
     switch (key)
@@ -1005,8 +1036,10 @@ void Cleanup() { //일단 지금은 안쓰임
 void drawObjects() {
     // 오브젝트들 그리는 함수
     make_Fence(0, 0, 0.0);
+    make_LongFence(1, 1, 0.0);
     make_Food(0, 0, 0.0);
     make_robot(0, 0, 0);
+    make_Floor(0, -1.0, -5.0);
 }
 
 

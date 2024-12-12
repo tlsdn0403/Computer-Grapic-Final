@@ -1,13 +1,6 @@
 #ifndef CUBESHAPE_H
 #define CUBESHAPE_H
 
-
-#include <iostream>
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-#include<gl/glm/glm/glm.hpp>
-#include<gl/glm/glm/ext.hpp>
-#include<gl/glm/glm/gtc/matrix_transform.hpp>
 #include <vector>
 #include"shape.h"
 

@@ -8,6 +8,7 @@ in vec2 TexCoord;
 uniform sampler2D Textures[];
 uniform sampler2D Texture0;  
 uniform sampler2D Texture1;  
+uniform sampler2D Texture2;  
 uniform int selectedTexture; // 몇번쨰의 텍스처를 사용할 것인지
 
 // Output color
@@ -20,6 +21,9 @@ void main() {
     }
     else if(selectedTexture==1){
         FragColor = texture(Texture1, TexCoord);
+    }
+    else if(selectedTexture==2){
+        FragColor = texture(Texture2, TexCoord);
     }
     else {
         // 텍스처를 사용하지 않는 경우 기본 색상
