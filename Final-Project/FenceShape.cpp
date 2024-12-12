@@ -1,14 +1,14 @@
 #include"FenceShape.h"
 
-
 void setSelectedTexture(GLuint shaderProgramID, int textureIndex) {
     glUseProgram(shaderProgramID); // Activate the shader program
     glUniform1i(glGetUniformLocation(shaderProgramID, "selectedTexture"), textureIndex);
 }
+
 FenceShape::FenceShape() {
-    faces.resize(18); // Allocate space for 12 faces
-    vertexColors.resize(18);
-    texCoords.resize(18);
+    faces.resize(22); // Allocate space for 12 faces
+    vertexColors.resize(22);
+    texCoords.resize(22);
     rotationAngleY = 0.0f;
     rotationAngleX = 0.0f;
     rotationAngleZ = 0.0f;
@@ -194,73 +194,86 @@ void FenceShape::generateFaces() {
         color[0], color[1], color[2],
         color[0], color[1], color[2]
     };
-    //맨위에 사각형
+
+
+    //맨 위에 있는 가로 사각형
     //Z+
     faces[12] = {
-       position[0] -( width *2 + size + size), position[1]- 2*size , position[2] + size,  // Bottom-left
-       position[0] + width *2 + size + size, position[1]- 2*size , position[2] + size,  // Bottom-right
-       position[0] - (width *2 + size + size), position[1]- 2*size - 2 * size  , position[2] + size,  // Top-left
-       position[0] + width *2 + size + size, position[1]- 2*size - 2 * size , position[2] + size   // Top-right
-    };
-    vertexColors[12] = {
-        color[0], color[1], color[2],
-        color[0], color[1], color[2],
-        color[0], color[1], color[2],
-        color[0], color[1], color[2]
+       position[0] -( width *2 + size + size), position[1]- size , position[2] + size,  // Bottom-left
+       position[0] + width *2 + size + size, position[1]- size , position[2] + size,  // Bottom-right
+       position[0] - (width *2 + size + size), position[1]- 2*size   , position[2] + size,  // Top-left
+       position[0] + width *2 + size + size, position[1]- 2*size  , position[2] + size   // Top-right
     };
     //오른쪽 면
     faces[13] = {
-       position[0] + (width *2 + size + size), position[1]- 2*size , position[2] + size,  // Bottom-left
-       position[0] + width *2 + size + size, position[1]- 2*size , position[2] - size,  // Bottom-right
-       position[0] + (width *2 + size + size), position[1]- 2*size - 2 * size, position[2] + size,  // Top-left
-       position[0] + width *2 + size + size, position[1]- 2*size - 2 * size, position[2] - size   // Top-right
-    };
-    vertexColors[13] = {
-        color[0], color[1], color[2],
-        color[0], color[1], color[2],
-        color[0], color[1], color[2],
-        color[0], color[1], color[2]
+       position[0] + (width *2 + size + size), position[1]- size , position[2] + size,  // Bottom-left
+       position[0] + width *2 + size + size, position[1]- size , position[2] - size,  // Bottom-right
+       position[0] + (width *2 + size + size), position[1] - 2 * size, position[2] + size,  // Top-left
+       position[0] + width *2 + size + size, position[1] - 2 * size, position[2] - size   // Top-right
     };
 
     //왼쪽 면
     faces[14] = {
-       position[0] - (width *2 + size + size), position[1]- 2*size , position[2] + size,  // Bottom-left
-       position[0] - (width *2 + size + size), position[1]- 2*size , position[2] - size,  // Bottom-right
-       position[0] - (width *2 + size + size), position[1]- 2*size - 2 * size, position[2] + size,  // Top-left
-       position[0] - (width *2 + size + size), position[1]- 2*size - 2 * size, position[2] - size   // Top-right
-    };
-    vertexColors[14] = {
-        color[0], color[1], color[2],
-        color[0], color[1], color[2],
-        color[0], color[1], color[2],
-        color[0], color[1], color[2]
+       position[0] - (width *2 + size + size), position[1]- size , position[2] + size,  // Bottom-left
+       position[0] - (width *2 + size + size), position[1]- size , position[2] - size,  // Bottom-right
+       position[0] - (width *2 + size + size), position[1] - 2 * size, position[2] + size,  // Top-left
+       position[0] - (width *2 + size + size), position[1] - 2 * size, position[2] - size   // Top-right
     };
     //Z-
     faces[15] = {
-       position[0] - (width *2 + size + size), position[1]- 2*size , position[2] - size,  // Bottom-left
-       position[0] + width *2 + size + size, position[1]- 2*size , position[2] - size,  // Bottom-right
-       position[0] - (width *2 + size + size), position[1]- 2*size - 2 * size, position[2] - size,  // Top-left
-       position[0] + width *2 + size + size, position[1]- 2*size - 2 * size, position[2] - size   // Top-right
-    };
-    vertexColors[15] = {
-        color[0], color[1], color[2],
-        color[0], color[1], color[2],
-        color[0], color[1], color[2],
-        color[0], color[1], color[2]
+       position[0] - (width *2 + size + size), position[1]- size , position[2] - size,  // Bottom-left
+       position[0] + width *2 + size + size, position[1]- size , position[2] - size,  // Bottom-right
+       position[0] - (width *2 + size + size), position[1] - 2 * size, position[2] - size,  // Top-left
+       position[0] + width *2 + size + size, position[1]- 2 * size, position[2] - size   // Top-right
     };
     //Y-
     faces[16] = {
-       position[0] - (width *2 + size + size), position[1]- 2*size   , position[2] + size,  // Bottom-left
-       position[0] + width *2 + size + size, position[1]- 2*size  , position[2] + size,  // Bottom-right
+       position[0] - (width *2 + size + size), position[1]-size   , position[2] + size,  // Bottom-left
+       position[0] + width *2 + size + size, position[1]-size  , position[2] + size,  // Bottom-right
        position[0] - (width *2 + size + size), position[1]- 2*size , position[2] - size,  // Top-left
        position[0] + width *2 + size + size, position[1]- 2*size , position[2] - size   // Top-right
     };
-    vertexColors[16] = {
-        color[0], color[1], color[2],
-        color[0], color[1], color[2],
-        color[0], color[1], color[2],
-        color[0], color[1], color[2]
+
+
+    //맨 위에 있는 가로 사각형
+    //Z+
+    faces[17] = {
+       position[0] - (width * 2 + size + size), position[1] -3*size - size , position[2] + size,  // Bottom-left
+       position[0] + width * 2 + size + size, position[1] -3*size - size , position[2] + size,  // Bottom-right
+       position[0] - (width * 2 + size + size), position[1] -3*size - 2 * size   , position[2] + size,  // Top-left
+       position[0] + width * 2 + size + size, position[1] -3*size - 2 * size  , position[2] + size   // Top-right
     };
+    //오른쪽 면
+    faces[18] = {
+       position[0] + (width * 2 + size + size), position[1] -3*size - size , position[2] + size,  // Bottom-left
+       position[0] + width * 2 + size + size, position[1] -3*size - size , position[2] - size,  // Bottom-right
+       position[0] + (width * 2 + size + size), position[1] -3*size - 2 * size, position[2] + size,  // Top-left
+       position[0] + width * 2 + size + size, position[1] -3*size - 2 * size, position[2] - size   // Top-right
+    };
+
+    //왼쪽 면
+    faces[19] = {
+       position[0] - (width * 2 + size + size), position[1] -3*size - size , position[2] + size,  // Bottom-left
+       position[0] - (width * 2 + size + size), position[1] -3*size - size , position[2] - size,  // Bottom-right
+       position[0] - (width * 2 + size + size), position[1] -3*size - 2 * size, position[2] + size,  // Top-left
+       position[0] - (width * 2 + size + size), position[1] -3*size - 2 * size, position[2] - size   // Top-right
+    };
+    //Z-
+    faces[20] = {
+       position[0] - (width * 2 + size + size), position[1] -3*size - size , position[2] - size,  // Bottom-left
+       position[0] + width * 2 + size + size, position[1] -3*size - size , position[2] - size,  // Bottom-right
+       position[0] - (width * 2 + size + size), position[1] -3*size - 2 * size, position[2] - size,  // Top-left
+       position[0] + width * 2 + size + size, position[1] -3*size - 2 * size, position[2] - size   // Top-right
+    };
+    //Y-
+    faces[21] = {
+       position[0] - (width * 2 + size + size), position[1] -3*size - size   , position[2] + size,  // Bottom-left
+       position[0] + width * 2 + size + size, position[1] -3*size - size  , position[2] + size,  // Bottom-right
+       position[0] - (width * 2 + size + size), position[1] -3*size - 2 * size , position[2] - size,  // Top-left
+       position[0] + width * 2 + size + size, position[1] -3*size - 2 * size , position[2] - size   // Top-right
+    };
+
+
     // 텍스처 좌표
     texCoords[0] = {
            0.0f , 0.0f , // 아래 왼쪽
@@ -364,6 +377,36 @@ void FenceShape::generateFaces() {
             0.0f, 1.0f, // 위 왼쪽
             1.0f , 1.0f , // 위 오른쪽
     };
+    texCoords[17] = {
+           0.0f , 0.0f , // 아래 왼쪽
+            1.0f ,  0.0f, // 아래 오른쪽
+            0.0f, 1.0f, // 위 왼쪽
+            1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[18] = {
+           0.0f , 0.0f , // 아래 왼쪽
+            1.0f ,  0.0f, // 아래 오른쪽
+            0.0f, 1.0f, // 위 왼쪽
+            1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[19] = {
+           0.0f , 0.0f , // 아래 왼쪽
+            1.0f ,  0.0f, // 아래 오른쪽
+            0.0f, 1.0f, // 위 왼쪽
+            1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[20] = {
+           0.0f , 0.0f , // 아래 왼쪽
+            1.0f ,  0.0f, // 아래 오른쪽
+            0.0f, 1.0f, // 위 왼쪽
+            1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[21] = {
+           0.0f , 0.0f , // 아래 왼쪽
+            1.0f ,  0.0f, // 아래 오른쪽
+            0.0f, 1.0f, // 위 왼쪽
+            1.0f , 1.0f , // 위 오른쪽
+    };
 }
 
 void FenceShape::draw(GLuint shaderProgramID, GLuint vbo[], GLuint textureID[]) {
@@ -373,7 +416,7 @@ void FenceShape::draw(GLuint shaderProgramID, GLuint vbo[], GLuint textureID[]) 
     setSelectedTexture(shaderProgramID, 0);
     glUniform1i(glGetUniformLocation(shaderProgramID, "Texture0"), 0);
     glUniform1i(glGetUniformLocation(shaderProgramID, "selectedTexture"), 0);
-    for (int i = 0; i < 18; i++) {
+    for (int i = 0; i < 21; i++) {
         if (i >= faces.size()) {
             std::cerr << "Error: faces vector index out of range." << std::endl;
             continue;

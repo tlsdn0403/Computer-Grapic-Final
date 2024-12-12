@@ -19,15 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="CubeShape.cpp" />
     <ClCompile Include="FenceShape.cpp" />
     <ClCompile Include="FinalProject.cpp" />
-    <ClCompile Include="RobotLeg.cpp" />
+    <ClCompile Include="Floor.cpp" />
+    <ClCompile Include="Food.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Box.h" />
     <ClInclude Include="CubeShape.h" />
     <ClInclude Include="FenceShape.h" />
     <ClInclude Include="Floor.h" />
+    <ClInclude Include="Food.h" />
     <ClInclude Include="shape.h" />
   </ItemGroup>
   <ItemGroup>

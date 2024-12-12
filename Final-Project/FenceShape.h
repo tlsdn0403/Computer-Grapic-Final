@@ -6,8 +6,8 @@
 #include<gl/glm/glm/ext.hpp>
 #include<gl/glm/glm/gtc/matrix_transform.hpp>
 #include <vector>
-#include"shape.h"
 
+void setSelectedTexture(GLuint shaderProgramID, int textureIndex);
 class FenceShape{
 public:
     std::vector<std::vector<GLfloat>> faces; // Stores face vertices
