@@ -6,26 +6,26 @@ void setSelectedTexture(GLuint shaderProgramID, int textureIndex) {
     glUniform1i(glGetUniformLocation(shaderProgramID, "selectedTexture"), textureIndex);
 }
 FenceShape::FenceShape() {
-    faces.resize(12); // Allocate space for 12 faces
-    vertexColors.resize(12);
-    texCoords.resize(12);
+    faces.resize(18); // Allocate space for 12 faces
+    vertexColors.resize(18);
+    texCoords.resize(18);
     rotationAngleY = 0.0f;
     rotationAngleX = 0.0f;
     rotationAngleZ = 0.0f;
-    moving_fence_X = 1.0f;
-    moving_fence_Y = .0f;
-    moving_fence_Z = 0.0f;
-    size = 0.05f; // Default size
-    width = 0.3f;
+    //팬스의 이동행렬 값들 
+    moving_fence_X = 0.0f;
+    moving_fence_Y = 0.0f;
+    moving_fence_Z = -2.0f;
+    size = 0.08f; // Default size
+    width = 0.2f;  //두 울타리 다리의 너비
     position = glm::vec3(0.0f);
     color = glm::vec3(1.0f); // Default white color
 }
 
 void FenceShape::generateFaces() {
-    float heightMultiplier = 15.0f; // Makes the leg longer along the y-axis
+    float heightMultiplier = 10.0f; // 울타리 높이
 
-    // Define faces and vertex colors here as in the original code
-    // Example for the front face:
+
     // Front Face (Z+)
     faces[0] = {
        position[0] -width - size - size, position[1] - size * heightMultiplier, position[2] + size,  // Bottom-left 
@@ -113,9 +113,9 @@ void FenceShape::generateFaces() {
 
     // Front Face (Z+)
     faces[6] = {
-        position[0]  +width - size + size, position[1] - size * heightMultiplier, position[2] + size,  // Bottom-left
+        position[0]  +width , position[1] - size * heightMultiplier, position[2] + size,  // Bottom-left
        position[0] +width + size + size, position[1] - size * heightMultiplier, position[2] + size,  // Bottom-right
-       position[0] +width - size + size, position[1], position[2] + size,  // Top-left
+       position[0] +width , position[1], position[2] + size,  // Top-left
        position[0] +width + size + size, position[1], position[2] + size   // Top-right
     };
     vertexColors[6] = {
@@ -194,6 +194,73 @@ void FenceShape::generateFaces() {
         color[0], color[1], color[2],
         color[0], color[1], color[2]
     };
+    //맨위에 사각형
+    //Z+
+    faces[12] = {
+       position[0] -( width *2 + size + size), position[1]- 2*size , position[2] + size,  // Bottom-left
+       position[0] + width *2 + size + size, position[1]- 2*size , position[2] + size,  // Bottom-right
+       position[0] - (width *2 + size + size), position[1]- 2*size - 2 * size  , position[2] + size,  // Top-left
+       position[0] + width *2 + size + size, position[1]- 2*size - 2 * size , position[2] + size   // Top-right
+    };
+    vertexColors[12] = {
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2]
+    };
+    //오른쪽 면
+    faces[13] = {
+       position[0] + (width *2 + size + size), position[1]- 2*size , position[2] + size,  // Bottom-left
+       position[0] + width *2 + size + size, position[1]- 2*size , position[2] - size,  // Bottom-right
+       position[0] + (width *2 + size + size), position[1]- 2*size - 2 * size, position[2] + size,  // Top-left
+       position[0] + width *2 + size + size, position[1]- 2*size - 2 * size, position[2] - size   // Top-right
+    };
+    vertexColors[13] = {
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2]
+    };
+
+    //왼쪽 면
+    faces[14] = {
+       position[0] - (width *2 + size + size), position[1]- 2*size , position[2] + size,  // Bottom-left
+       position[0] - (width *2 + size + size), position[1]- 2*size , position[2] - size,  // Bottom-right
+       position[0] - (width *2 + size + size), position[1]- 2*size - 2 * size, position[2] + size,  // Top-left
+       position[0] - (width *2 + size + size), position[1]- 2*size - 2 * size, position[2] - size   // Top-right
+    };
+    vertexColors[14] = {
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2]
+    };
+    //Z-
+    faces[15] = {
+       position[0] - (width *2 + size + size), position[1]- 2*size , position[2] - size,  // Bottom-left
+       position[0] + width *2 + size + size, position[1]- 2*size , position[2] - size,  // Bottom-right
+       position[0] - (width *2 + size + size), position[1]- 2*size - 2 * size, position[2] - size,  // Top-left
+       position[0] + width *2 + size + size, position[1]- 2*size - 2 * size, position[2] - size   // Top-right
+    };
+    vertexColors[15] = {
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2]
+    };
+    //Y-
+    faces[16] = {
+       position[0] - (width *2 + size + size), position[1]- 2*size   , position[2] + size,  // Bottom-left
+       position[0] + width *2 + size + size, position[1]- 2*size  , position[2] + size,  // Bottom-right
+       position[0] - (width *2 + size + size), position[1]- 2*size , position[2] - size,  // Top-left
+       position[0] + width *2 + size + size, position[1]- 2*size , position[2] - size   // Top-right
+    };
+    vertexColors[16] = {
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2]
+    };
     // 텍스처 좌표
     texCoords[0] = {
            0.0f , 0.0f , // 아래 왼쪽
@@ -267,9 +334,36 @@ void FenceShape::generateFaces() {
            0.0f, 1.0f, // 위 왼쪽
            1.0f , 1.0f , // 위 오른쪽
     };
-   
-
-
+    texCoords[12] = {
+           0.0f , 0.0f , // 아래 왼쪽
+            1.0f ,  0.0f, // 아래 오른쪽
+            0.0f, 1.0f, // 위 왼쪽
+            1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[13] = {
+           0.0f , 0.0f , // 아래 왼쪽
+            1.0f ,  0.0f, // 아래 오른쪽
+            0.0f, 1.0f, // 위 왼쪽
+            1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[14] = {
+           0.0f , 0.0f , // 아래 왼쪽
+            1.0f ,  0.0f, // 아래 오른쪽
+            0.0f, 1.0f, // 위 왼쪽
+            1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[15] = {
+           0.0f , 0.0f , // 아래 왼쪽
+            1.0f ,  0.0f, // 아래 오른쪽
+            0.0f, 1.0f, // 위 왼쪽
+            1.0f , 1.0f , // 위 오른쪽
+    };
+    texCoords[16] = {
+           0.0f , 0.0f , // 아래 왼쪽
+            1.0f ,  0.0f, // 아래 오른쪽
+            0.0f, 1.0f, // 위 왼쪽
+            1.0f , 1.0f , // 위 오른쪽
+    };
 }
 
 void FenceShape::draw(GLuint shaderProgramID, GLuint vbo[], GLuint textureID[]) {
@@ -279,7 +373,7 @@ void FenceShape::draw(GLuint shaderProgramID, GLuint vbo[], GLuint textureID[]) 
     setSelectedTexture(shaderProgramID, 0);
     glUniform1i(glGetUniformLocation(shaderProgramID, "Texture0"), 0);
     glUniform1i(glGetUniformLocation(shaderProgramID, "selectedTexture"), 0);
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 18; i++) {
         if (i >= faces.size()) {
             std::cerr << "Error: faces vector index out of range." << std::endl;
             continue;

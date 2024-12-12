@@ -766,7 +766,7 @@ void make_cube(GLfloat x, GLfloat y, GLfloat z) {
     newShape->position[0] = x;
     newShape->position[1] = y;
     newShape->position[2] = z;
-    newShape->size = 0.2f;
+    newShape->size = 0.1f;
     newShape->generateFaces(); // 정점 데이터 초기화
     Fence_shapes.push_back(newShape);
   
@@ -803,8 +803,8 @@ void Keyboard(unsigned char key, int x, int y) {
         break;
     }case 'Z': {
         cameraZ -= 0.1;
-        if (cameraZ <= 0) {
-            cameraZ = 0;
+        if (cameraZ <= -3.0) {
+            cameraZ = -3.0;
         }
         glutPostRedisplay();
         break;
@@ -968,7 +968,7 @@ void Cleanup() { //일단 지금은 안쓰임
 }
 void drawObjects() {
     // 오브젝트들 그리는 함수
-    make_cube(0, 0, -2.0);
+    make_cube(0, 0, 0.0);
     make_robot(0, 0, 0);
 }
 

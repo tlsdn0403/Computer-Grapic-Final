@@ -27,7 +27,7 @@
   <ItemGroup>
     <ClInclude Include="CubeShape.h" />
     <ClInclude Include="FenceShape.h" />
-    <ClInclude Include="RobotLeg.h" />
+    <ClInclude Include="Floor.h" />
     <ClInclude Include="shape.h" />
   </ItemGroup>
   <ItemGroup>
