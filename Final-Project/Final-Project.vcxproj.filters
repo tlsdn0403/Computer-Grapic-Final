@@ -53,10 +53,10 @@
     <ClInclude Include="Box.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Food.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="longFence.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Food.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
