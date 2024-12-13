@@ -100,6 +100,8 @@ void CubeShape::draw(GLuint shaderProgramID, GLuint vbo[]) {
             std::cerr << "Error: faces vector index out of range." << std::endl;
             continue;
         }
+
+
         glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
         glBufferSubData(GL_ARRAY_BUFFER, 0, faces[i].size() * sizeof(GLfloat), faces[i].data());
         glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);

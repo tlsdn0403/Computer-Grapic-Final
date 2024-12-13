@@ -3,9 +3,9 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include<gl/glm/glm/glm.hpp>
-#include<gl/glm/glm/ext.hpp>
-#include<gl/glm/glm/gtc/matrix_transform.hpp>
+#include<glm/glm.hpp>
+#include<glm/ext.hpp>
+#include<glm/gtc/matrix_transform.hpp>
 #include"stb_image.h"
 #include <cstdlib>
 #include <random>
@@ -55,6 +55,7 @@ void make_fragmentShaders();
 void Keyboard(unsigned char key, int x, int y);
 void loadTexture(GLuint textureID, const char* filePath, GLenum textureUnit, const char* uniformName, GLuint shaderProgramID);
 void Cleanup();
+void TimerFunction(int value);
 void getOpenGLMouseCoords(int mouseX, int mouseY, float& openglX, float& openglY) {
     openglX = (static_cast<float>(mouseX) / glutGet(GLUT_WINDOW_WIDTH)) * 2.0f - 1.0f; //X
     openglY = -((static_cast<float>(mouseY) / glutGet(GLUT_WINDOW_HEIGHT)) * 2.0f - 1.0f); // Y
@@ -519,6 +520,7 @@ std::vector<FenceShape*> Fence_shapes;
 std::vector<Box*> Box_shapes;
 std::vector<Food*> Food_shapes;
 std::vector<Floor*> Floor_shapes;
+std::vector<longFence*> LongFence_shapes;
 
 std::vector<Shape*> shapes_line;
 
@@ -558,7 +560,7 @@ int main(int argc, char** argv) {
     make_shaderProgram();
     InitBuffer();
     //--- Register callback functions
-
+    glutTimerFunc(30, TimerFunction, 0); // 타이머함수 재 설정
     drawObjects();
     initTextures(shaderProgramID);
     glutDisplayFunc(drawScene);
@@ -647,7 +649,9 @@ void drawScene() {
     for (auto shape : shapes) {  // shapes 벡터에 저장한 도형들을 모두 그리는 거  (각 도형 클래스마다 draw 함수를 넣어놨음)
         shape->draw(shaderProgramID, vboArr);
     }
-    
+    for (auto shape : LongFence_shapes) {
+        shape->draw(shaderProgramID, vboArr, textureID);
+    }
     for (auto shape : Fence_shapes) {  // 팬스 벡터에 저장한 도형들을 모두 그리는 거  (각 도형 클래스마다 draw 함수를 넣어놨음)
         shape->draw(shaderProgramID, vboArr, textureID);
     }
@@ -660,6 +664,7 @@ void drawScene() {
     for (auto shape : Floor_shapes) {  // 바닥 
         shape->draw(shaderProgramID, vboArr, textureID);
     }
+    
     glutSwapBuffers();
 }
 
@@ -803,7 +808,7 @@ void make_LongFence(GLfloat x, GLfloat y, GLfloat z) {
     newShape->position[2] = z;
     newShape->size = 0.1f;
     newShape->generateFaces(); // 정점 데이터 초기화
-    Fence_shapes.push_back(newShape);
+    LongFence_shapes.push_back(newShape);
 
     glutPostRedisplay();
 }
@@ -824,7 +829,7 @@ void make_Food(GLfloat x, GLfloat y, GLfloat z) {
     newShape->position[0] = x;
     newShape->position[1] = y;
     newShape->position[2] = z;
-    newShape->size = 0.05f; //사이즈 정해줄 수 있음
+    newShape->size = 0.02f; //사이즈 정해줄 수 있음
     newShape->generateFaces(); // 정점 데이터 초기화
     Food_shapes.push_back(newShape);
 
@@ -1035,11 +1040,24 @@ void Cleanup() { //일단 지금은 안쓰임
 }
 void drawObjects() {
     // 오브젝트들 그리는 함수
-    make_Fence(0, 0, 0.0);
-    make_LongFence(1, 1, 0.0);
-    make_Food(0, 0, 0.0);
+    make_Fence(0, 0, -2.0);
+    make_LongFence(1, 1, -2.0);
+    make_Food(0, 0, -3.0);
     make_robot(0, 0, 0);
     make_Floor(0, -1.0, -5.0);
 }
 
-
+void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
+    for (auto shape :Fence_shapes) {
+        shape->moving_fence_Z += 0.02;
+    }
+    for (auto shape : Food_shapes) {
+        shape->moving_Box_Z += 0.02;
+    }
+    for (auto shape : LongFence_shapes) {
+        shape->moving_fence_Z += 0.02;
+    }
+    glutSwapBuffers(); //--- 화면에 출력하기
+    glutPostRedisplay(); // 화면 재 출력
+    glutTimerFunc(30, TimerFunction, 0); // 타이머함수 재 설정
+}
