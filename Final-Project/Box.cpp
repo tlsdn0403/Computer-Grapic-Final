@@ -95,7 +95,6 @@ void Box::generateFaces() {
            0.0f, 1.0f, // 위 왼쪽
            1.0f , 1.0f , // 위 오른쪽
     };
-
 }
 
 void Box::draw(GLuint shaderProgramID, GLuint vbo[], GLuint textureID[]) {

@@ -19,6 +19,7 @@ public:
     GLfloat rotationAngleX;
     GLfloat rotationAngleZ;
     GLfloat moving_Box_X, moving_Box_Y, moving_Box_Z;
+    bool valid = false;
     int num; // Used for identification
     int robot_dir; // Direction of the robot
     GLfloat size;
