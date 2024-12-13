@@ -18,7 +18,7 @@
 
 bool projection, rotate_mid, rotateBarrel, rotateArm , frontFaceOpen,isWalking,isJumping = false;
 bool isDepthTest = false;
-
+bool gamePlay = false;
 GLuint textureID[10];
 GLfloat rotationAngleX = 0;
 GLfloat rotationBarrelAngle, rotationArmAngle = 0;
@@ -556,7 +556,7 @@ int main(int argc, char** argv) {
     make_shaderProgram();
     InitBuffer();
     //--- Register callback functions
-    glutTimerFunc(30, TimerFunction, 0); // 타이머함수 재 설정
+    
     drawObjects();
     initTextures(shaderProgramID);
     glutDisplayFunc(drawScene);
@@ -898,6 +898,12 @@ void Keyboard(unsigned char key, int x, int y) {
         glutTimerFunc(12, jumping, 0);
         break;
     }
+    case's':{
+        //s한 번 누르면 gamePlay가 참 다시 누르면 거짓
+        gamePlay = !gamePlay;
+        glutTimerFunc(30, TimerFunction, 0); // 타이머함수 재 설정;
+        break;
+    }
     default:
         break;
     }
@@ -1044,6 +1050,9 @@ void drawObjects() {
 }
 
 void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
+    if (!gamePlay) { //참이면 실행 거짓이면 종료
+        return;
+    }
     for (auto shape :Fence_shapes) {
         shape->moving_fence_Z += 0.02;
     }
