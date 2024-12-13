@@ -59,6 +59,9 @@
     <ClInclude Include="Food.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="glmFiles.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.glsl">

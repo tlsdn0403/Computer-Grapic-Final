@@ -1,11 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define STB_IMAGE_IMPLEMENTATION
 #include <iostream>
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-#include<glm/glm/glm.hpp>
-#include<glm/glm/ext.hpp>
-#include<glm/glm/gtc/matrix_transform.hpp>
 #include"stb_image.h"
 #include <cstdlib>
 #include <random>
@@ -18,6 +13,7 @@
 #include"Food.h"
 #include"Floor.h"
 #include"longFence.h"
+#include"glmFiles.hpp"
 
 
 bool projection, rotate_mid, rotateBarrel, rotateArm , frontFaceOpen,isWalking,isJumping = false;

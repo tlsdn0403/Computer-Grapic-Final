@@ -33,6 +33,7 @@
     <ClInclude Include="FenceShape.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Food.h" />
+    <ClInclude Include="glmFiles.hpp" />
     <ClInclude Include="longFence.h" />
     <ClInclude Include="shape.h" />
   </ItemGroup>

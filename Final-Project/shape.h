@@ -1,13 +1,9 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 #include <iostream>
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-#include<glm/glm/glm.hpp>
-#include<glm/glm/ext.hpp>
-#include<glm/glm/gtc/matrix_transform.hpp>
 #include <cstdlib>
 #include <vector>
+#include"glmFiles.hpp"
 
 class Shape {
 public:
