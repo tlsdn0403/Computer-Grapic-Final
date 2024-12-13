@@ -15,7 +15,7 @@ FenceShape::FenceShape() {
     //팬스의 이동행렬 값들 
     moving_fence_X = 0.0f;
     moving_fence_Y = 0.0f;
-    moving_fence_Z = -2.0f;
+    moving_fence_Z = 0.0f;
     size = 0.08f; // Default size
     width = 0.2f;  //두 울타리 다리의 너비
     position = glm::vec3(0.0f);

@@ -3,9 +3,9 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include<glm/glm.hpp>
-#include<glm/ext.hpp>
-#include<glm/gtc/matrix_transform.hpp>
+#include<glm/glm/glm.hpp>
+#include<glm/glm/ext.hpp>
+#include<glm/glm/gtc/matrix_transform.hpp>
 #include"stb_image.h"
 #include <cstdlib>
 #include <random>
@@ -1042,7 +1042,7 @@ void drawObjects() {
     // 오브젝트들 그리는 함수
     make_Fence(0, 0, -2.0);
     make_LongFence(1, 1, -2.0);
-    make_Food(0, 0, -3.0);
+    make_Food(0, 0, -2.0);
     make_robot(0, 0, 0);
     make_Floor(0, -1.0, -5.0);
 }

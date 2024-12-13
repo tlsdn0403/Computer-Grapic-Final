@@ -134,11 +134,9 @@ void Food::draw(GLuint shaderProgramID, GLuint vbo[], GLuint textureID[]) {
 }
 glm::mat4 Food::createTransformMatrix() {
     glm::mat4 Tx = glm::translate(glm::mat4(1.0f), glm::vec3(moving_Box_X, moving_Box_Y, moving_Box_Z));
-    glm::mat4 Ty_1 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.6f, 0.0f));
-    glm::mat4 Ty_2 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.6f, 0.0f));
     glm::mat4 Ry = glm::rotate(glm::mat4(1.0f), glm::radians(rotationAngleY), glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 Rx = glm::rotate(glm::mat4(1.0f), glm::radians(rotationAngleX), glm::vec3(1.0f, 0.0f, 0.0f));
     glm::mat4 Rz = glm::rotate(glm::mat4(1.0f), glm::radians(rotationAngleZ), glm::vec3(0.0f, 0.0f, 1.0f));
-    glm::mat4 TR = Tx * Ty_1 * Ry * Rx * Rz * Ty_2;
+    glm::mat4 TR = Tx  * Ry * Rx * Rz ;
     return TR;
 }
