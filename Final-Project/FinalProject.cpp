@@ -44,6 +44,7 @@ int FenceCount = 0;
 int LongFenceCount = 0;
 int BoxCount = 0;
 int FoodCount = 0;
+int jumpstate = 0;
 float ObjSpeed = 0.02;
 void drawScene();
 void initTextures(GLuint shaderProgramID);
@@ -53,7 +54,7 @@ void make_LongFence(GLfloat x, GLfloat y, GLfloat z);
 void make_Food(GLfloat x, GLfloat y, GLfloat z);
 void make_Floor(GLfloat x, GLfloat y, GLfloat z);
 void walking(int value);
-void jumping(int value);
+void jumping();
 void Reshape(int w, int h);
 void InitBuffer();
 void drawObjects(int i, int j);
@@ -863,7 +864,6 @@ void Keyboard(unsigned char key, int x, int y) {
     case'w': {
         isWalking = !isWalking;
         robot_dir = 8;
-        glutTimerFunc(12, walking, 0);
         glutPostRedisplay();
         break;
     }
@@ -909,13 +909,12 @@ void Keyboard(unsigned char key, int x, int y) {
     }
     case'j':{
         isJumping = true;
-        glutTimerFunc(12, jumping, 0);
         break;
     }
     case's':{
         //s한 번 누르면 gamePlay가 참 다시 누르면 거짓
         gamePlay = !gamePlay;
-        glutTimerFunc(30, TimerFunction, 0); // 타이머함수 재 설정;
+        glutTimerFunc(10, TimerFunction, 0); // 타이머함수 재 설정;
         break;
     }
     default:
@@ -1020,19 +1019,17 @@ void walking(int value) { //로봇 걷는 함수
     else if (rotationAngleZ <= -30||rotationAngleX<=-30) {
         value = 0;
     }
-    glutPostRedisplay();
-    glutTimerFunc(12, walking, value);
 }
-void jumping(int value) {
+void jumping() {
     if (!isJumping) {
         return;
     }
-    if (value == 0) {
+    if (jumpstate == 0) {
         //로봇 점프
         movingY += 0.03f;
         if (movingY >= 0.8f) {
             //로봇의 y좌표가 일정좌표이면 추락하도록(점프 끝)
-            value = 1;
+            jumpstate = 1;
         }
     }
     else {
@@ -1047,11 +1044,10 @@ void jumping(int value) {
         }
         if (movingY <= 0.0f) {
             movingY = 0;
+            jumpstate = 0;
             isJumping = 0;
         } 
     }
-    glutPostRedisplay();
-    glutTimerFunc(12, jumping, value);
 }
 
 void Cleanup() { //일단 지금은 안쓰임 
@@ -1116,11 +1112,15 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
     if (!gamePlay) { //참이면 실행 거짓이면 종료
         return;
     }
+    jumping();
     ++TimeCount;
-    if (TimeCount % SpawnTime == 0) {
+    if (TimeCount == SpawnTime) {
+        TimeCount = 0;
+        if (SpawnTime >= 50)
+            SpawnTime -= 10;
+        if(ObjSpeed <= 0.5)
+            ObjSpeed += 0.005;
         drawObjects(RandSpawn(gen), RandFoodLocate(gen));
-        SpawnTime -= 10;
-        ObjSpeed += 0.005;
     }
     for (int i = FenceCount - 1; i >= 0; --i) {
         if (Fence_shapes[i]->moving_fence_Z + -10.00 >= 0.5) {
@@ -1156,17 +1156,17 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
     }
     glutSwapBuffers(); //--- 화면에 출력하기
     glutPostRedisplay(); // 화면 재 출력
-    glutTimerFunc(30, TimerFunction, 0); // 타이머함수 재 설정
+    glutTimerFunc(10, TimerFunction, 0); // 타이머함수 재 설정
 }
 
 void CheckCollision() {
     for (auto shapes : Fence_shapes) {
-        if (shapes->moving_fence_Z - 10.00 >= 0.1 && shapes->position[1] == movingX) {
-            if (movingY + -0.9 <= shapes->moving_fence_Y - shapes->size) {
-                movingZ += ObjSpeed;
-                isJumping = 0;
-                movingY = 0;
-            }
+        if (shapes->moving_fence_Z - 10.00 >= -0.1 && shapes->position[0] == movingX) {
+            movingZ += ObjSpeed;
+            isJumping = 0;
+            movingY = 0;
+            std::cout << "c";
+            
         }
     }
     for (auto shapes : Food_shapes) {
