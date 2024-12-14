@@ -567,7 +567,7 @@ int main(int argc, char** argv) {
         std::cerr << "GLEW Initialization failed: " << glewGetErrorString(glewStatus) << std::endl;
         return EXIT_FAILURE;
     }
-
+    movingZ = -0.1f;
     make_shaderProgram();
     InitBuffer();
     //--- Register callback functions
@@ -645,11 +645,11 @@ void drawScene() {
 
     glViewport(0, 0, windowWidth , windowHeight);
     glm::mat4 projection;
-    glm::mat4 perspectiveProjection = glm::perspective(glm::radians(90.0f), aspect, 0.1f, 10.0f);
+    glm::mat4 perspectiveProjection = glm::perspective(glm::radians(90.0f), aspect, 0.1f, 15.0f);
     unsigned int projectionLocation = glGetUniformLocation(shaderProgramID, "projectionTransform");
     glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, &perspectiveProjection[0][0]);
 
-    glm::vec3 cameraPos = glm::vec3(0.0f + cameraX, 1.0f, 2.0f + cameraZ);
+    glm::vec3 cameraPos = glm::vec3(0.0f + cameraX, 1.5f, 3.0f + cameraZ);
     glm::vec3 cameraDirection = glm::vec3(0.0f, 0.0f , 0.0f);
     glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
     glm::mat4 view = glm::lookAt(cameraPos, cameraDirection, cameraUp);
@@ -1028,7 +1028,7 @@ void jumping() {
     }
     if (jumpstate == 0) {
         //로봇 점프
-        movingY += 0.1f;
+        movingY += 0.07 + ObjSpeed/5;
         if (movingY >= 1.4f) {
             //로봇의 y좌표가 일정좌표이면 추락하도록(점프 끝)
             jumpstate = 1;
@@ -1036,7 +1036,7 @@ void jumping() {
     }
     else {
         //착지
-        movingY -= 0.1f;
+        movingY -= (0.03f+ObjSpeed/5);
         if(BoxCount > 0){
             if ((movingX<Box_shapes[0]->position[0] + Box_shapes[0]->size && movingX > Box_shapes[0]->position[0] - Box_shapes[0]->size) &&
                 (movingZ<Box_shapes[0]->position[2] + Box_shapes[0]->size + Box_shapes[0]->length + Box_shapes[0]->moving_Box_Z && movingZ > Box_shapes[0]->position[2] - Box_shapes[0]->size + Box_shapes[0]->moving_Box_Z) &&
@@ -1139,7 +1139,7 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
         drawObjects(RandSpawn(gen), RandFoodLocate(gen));
     }
     for (int i = FenceCount - 1; i >= 0; --i) {
-        if (Fence_shapes[i]->moving_fence_Z + -10.00 >= 0.5) {
+        if (Fence_shapes[i]->moving_fence_Z + -10.00 >= 1.5) {
             Fence_shapes.erase(Fence_shapes.begin() + i);
             --FenceCount;
         }
@@ -1155,7 +1155,7 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
             Food_shapes[i]->moving_Box_Z += ObjSpeed;
     }
     for (int i = LongFenceCount - 1; i >= 0; --i) {
-        if (LongFence_shapes[i]->moving_fence_Z + -10.00 >= 0.5) {
+        if (LongFence_shapes[i]->moving_fence_Z + -10.00 >= 1.5) {
             LongFence_shapes.erase(LongFence_shapes.begin() + i);
             --LongFenceCount;
         }
@@ -1170,16 +1170,20 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
         else
             Box_shapes[i]->moving_Box_Z += ObjSpeed;
     }
+
     glutPostRedisplay(); // 화면 재 출력
     glutTimerFunc(16, TimerFunction, 0); // 타이머함수 재 설정
 }
 
 void CheckCollision() {
+    if (movingZ > 1.4f) {
+        movingY - 2.0f;
+    }
     for (auto shapes : Fence_shapes) {
-        if (shapes->moving_fence_Z+shapes->position[2] >= movingZ-0.02 && shapes->position[0] == movingX) {
-            movingZ += ObjSpeed;
-            isJumping = 0;
-            movingY = 0;
+        if (shapes->moving_fence_Z+shapes->position[2] + shapes->size >= movingZ && shapes->moving_fence_Z + shapes->position[2] - shapes->size <= movingZ && shapes->position[0] == movingX && movingY<=0.2f ) {
+            movingZ += 0.05;
+            std::cout << "c";
+            
         }
     }
     for (auto shapes : Food_shapes) {
