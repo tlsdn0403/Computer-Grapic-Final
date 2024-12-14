@@ -45,6 +45,7 @@ int LongFenceCount = 0;
 int BoxCount = 0;
 int FoodCount = 0;
 int jumpstate = 0;
+int walkstate = 0;
 float ObjSpeed = 0.02;
 void drawScene();
 void initTextures(GLuint shaderProgramID);
@@ -999,7 +1000,7 @@ void make_robot(GLfloat x, GLfloat y, GLfloat z) {
    
     glutPostRedisplay();
 }
-void walking(int value) { //·Îº¿ °È´Â ÇÔ¼ö
+void walking() { //·Îº¿ °È´Â ÇÔ¼ö
     if (!isWalking) {
         return;
     }
@@ -1008,17 +1009,17 @@ void walking(int value) { //·Îº¿ °È´Â ÇÔ¼ö
     if (rotationAngleY >= 180) {
         rotationAngleY = 180;
     }
-    if (value == 0) {
+    if (walkstate == 0) {
         rotationAngleX += speed * 200.0f;
     }
-    else if (value == 1) {
+    else if (walkstate == 1) {
         rotationAngleX -= speed * 200.0f;
     }
     if (rotationAngleZ >= 30||rotationAngleX>=30) {
-        value = 1;
+        walkstate = 1;
     }
     else if (rotationAngleZ <= -30||rotationAngleX<=-30) {
-        value = 0;
+        walkstate = 0;
     }
 }
 void jumping() {
@@ -1113,6 +1114,7 @@ void TimerFunction(int value) { // ½Ã°£ÀÌ Áö³²¿¡ µû¶ó °´Ã¼µé ÀÌµ¿
     if (!gamePlay) { //ÂüÀÌ¸é ½ÇÇà °ÅÁþÀÌ¸é Á¾·á
         return;
     }
+    walking();
     jumping();
     CheckCollision();
     ++TimeCount;
