@@ -14,7 +14,6 @@ public:
     GLfloat rotationAngleX;
     GLfloat rotationAngleZ;
     GLfloat moving_fence_X, moving_fence_Y, moving_fence_Z;
-    bool valid = false;
     int num; // Used for identification
     int robot_dir; // Direction of the robot
     GLfloat size; // Size of the leg
