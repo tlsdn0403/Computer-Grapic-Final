@@ -1184,6 +1184,7 @@ void CheckCollision() {
             movingZ += 0.05;
             std::cout << "c";
             
+
         }
     }
     for (auto shapes : Food_shapes) {
