@@ -16,16 +16,13 @@ void Floor::generateFaces() {
     position[0] - size, position[1] , position[2] - (size+ length),  // v3 (Bottom-left)
     position[0] + size, position[1]  , position[2] - (size+ length)   // v4 (Bottom-right)
     };
-
-  
-
+            
     texCoords[0] = {
           0.0f , 0.0f , // 아래 왼쪽
           1.0f ,  0.0f, // 아래 오른쪽
           0.0f, 1.0f, // 위 왼쪽
           1.0f , 1.0f , // 위 오른쪽
     };
-
 }
 
 void Floor::draw(GLuint shaderProgramID, GLuint vbo[], GLuint textureID[]) {

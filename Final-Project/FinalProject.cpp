@@ -805,7 +805,7 @@ void make_Fence(GLfloat x, GLfloat y, GLfloat z) {
     newShape->size = 0.1f;
     newShape->generateFaces(); // 정점 데이터 초기화
     Fence_shapes.push_back(newShape);
-  
+    ++FenceCount;
     glutPostRedisplay();
 }
 void make_LongFence(GLfloat x, GLfloat y, GLfloat z) {
@@ -816,7 +816,7 @@ void make_LongFence(GLfloat x, GLfloat y, GLfloat z) {
     newShape->size = 0.1f;
     newShape->generateFaces(); // 정점 데이터 초기화
     LongFence_shapes.push_back(newShape);
-
+    ++LongFenceCount;
     glutPostRedisplay();
 }
 void make_Box(GLfloat x, GLfloat y, GLfloat z) {
@@ -827,7 +827,7 @@ void make_Box(GLfloat x, GLfloat y, GLfloat z) {
     newShape->size = 0.1f;
     newShape->generateFaces(); // 정점 데이터 초기화
     Box_shapes.push_back(newShape);
-
+    ++BoxCount;
     glutPostRedisplay();
 }
 
@@ -839,7 +839,7 @@ void make_Food(GLfloat x, GLfloat y, GLfloat z) {
     newShape->size = 0.1f; //사이즈 정해줄 수 있음
     newShape->generateFaces(); // 정점 데이터 초기화
     Food_shapes.push_back(newShape);
-
+    ++FoodCount;
     glutPostRedisplay();
 }
 void make_Floor(GLfloat x, GLfloat y, GLfloat z) {
@@ -1047,7 +1047,7 @@ void jumping(int value) {
 }
 
 void Cleanup() { //일단 지금은 안쓰임 
-    // 할당된 Shape 객체 삭제
+    // 할당된 Shape 객체 삭제  
     for (auto shape : shapes) {
         delete shape;
     }
@@ -1057,69 +1057,48 @@ void drawObjects(int i, int j) {
     // 오브젝트들 그리는 함수
     if (i == 1) {
         make_Fence(-1, 0, -10.0);
-        ++FenceCount;
         make_LongFence(1, 1, -10.0);
-        ++LongFenceCount;
     }
     else if (i == 2) {
         make_Fence(0, 0, -10.0);
-        ++FenceCount;
         make_Box(-1, 0, -10.0);
-        ++BoxCount;
     }
     else if (i == 3) {    
         make_Fence(1, 0, -10.0);
-        ++FenceCount;
         make_Box(0, 0, -10.0);
-        ++BoxCount;
     }
     else if (i == 4) {
         make_LongFence(-1, 1, -10.0);
-        ++LongFenceCount;
         make_Box(1, 0, -10.0);
-        ++BoxCount;
     }
     else if (i == 5) {
         make_LongFence(0, 1, -10.0);
-        ++LongFenceCount;
         make_Fence(-1, 0, -10.0);
-        ++FenceCount;
     }
     else if (i == 6) {
         make_LongFence(1, 1, -10.0);
-        ++LongFenceCount;
         make_Fence(0, 0, -10.0);
-        ++FenceCount;
     }
     else if (i == 7) {
         make_Box(-1, 0, -10.0);
-        ++BoxCount;
         make_Fence(1, 0, -10.0);
-        ++FenceCount;
     }
     else if (i == 8) {
         make_Box(0, 0, -10.0);
-        ++BoxCount;
         make_LongFence(-1, 1, -10.0);
-        ++LongFenceCount;
     }
     else if (i == 9) {
         make_Box(1, 0, -10.0);
-        ++BoxCount;
         make_LongFence(0, 1, -10.0);
-        ++LongFenceCount;
     }
     if (j == 1){
         make_Food(-1, -0.5, -8.0);
-        ++FoodCount;
     }
     else if (j == 2){
         make_Food(0, -0.5, -8.0);
-        ++FoodCount;
     }
     else if (j == 3){
         make_Food(1, -0.5, -8.0);
-        ++FoodCount;
     }
     make_robot(0, 0, 0);
     make_Floor(0, -1.0, -5.0);
@@ -1170,4 +1149,23 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
     glutSwapBuffers(); //--- 화면에 출력하기
     glutPostRedisplay(); // 화면 재 출력
     glutTimerFunc(30, TimerFunction, 0); // 타이머함수 재 설정
+}
+
+void CheckCollision() {
+    for (auto shapes : Fence_shapes) {
+        if (shapes->moving_fence_Z - 10.00 >= 0.1) {
+
+        }
+    }
+    for (auto shapes : Food_shapes) {
+        if (shapes->moving_Box_Z - 10.00 >= 0.1) {
+
+        }
+    }
+    for (auto shapes : LongFence_shapes) {
+        if (shapes->moving_fence_Z - 10.00 >= 0.1) {
+
+        }
+    }
+
 }
