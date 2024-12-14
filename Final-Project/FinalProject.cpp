@@ -1181,7 +1181,7 @@ void CheckCollision() {
     }
     for (auto shapes : Fence_shapes) {
         if (shapes->moving_fence_Z+shapes->position[2] + shapes->size >= movingZ && shapes->moving_fence_Z + shapes->position[2] - shapes->size <= movingZ && shapes->position[0] == movingX && movingY<=0.2f ) {
-            movingZ += 0.05;
+            movingZ += ObjSpeed;
             std::cout << "c";
             
 
