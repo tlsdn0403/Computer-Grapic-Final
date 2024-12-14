@@ -572,7 +572,7 @@ int main(int argc, char** argv) {
     InitBuffer();
     //--- Register callback functions
     
-    drawObjects(8, 0);
+    drawObjects(1, 0);
     initTextures(shaderProgramID);
     glutDisplayFunc(drawScene);
     glutReshapeFunc(Reshape);
@@ -631,7 +631,7 @@ void initTextures(GLuint shaderProgramID) {
     // Load textures into the texture array
     loadTexture(textureID[0], "Fence.png", GL_TEXTURE0, "Texture0", shaderProgramID); //펜스 사진
     loadTexture(textureID[1], "chocopi.png", GL_TEXTURE1, "Texture1", shaderProgramID); //음식사진
-    loadTexture(textureID[2], "sky.jpg", GL_TEXTURE2, "Texture2", shaderProgramID); //바닥 사진 바꿀거면 sky.jpg대신 다른 사진 넣으면 됨
+    loadTexture(textureID[2], "floor.png", GL_TEXTURE2, "Texture2", shaderProgramID); //바닥 사진 바꿀거면 sky.jpg대신 다른 사진 넣으면 됨
     loadTexture(textureID[3], "Box.png", GL_TEXTURE3, "Texture3", shaderProgramID);
 }
 
@@ -1028,15 +1028,15 @@ void jumping() {
     }
     if (jumpstate == 0) {
         //로봇 점프
-        movingY += 0.03f;
-        if (movingY >= 0.8f) {
+        movingY += 0.1f;
+        if (movingY >= 1.4f) {
             //로봇의 y좌표가 일정좌표이면 추락하도록(점프 끝)
             jumpstate = 1;
         }
     }
     else {
         //착지
-        movingY -= 0.03f;
+        movingY -= 0.1f;
         if(BoxCount > 0){
             if ((movingX<Box_shapes[0]->position[0] + Box_shapes[0]->size && movingX > Box_shapes[0]->position[0] - Box_shapes[0]->size) &&
                 (movingZ<Box_shapes[0]->position[2] + Box_shapes[0]->size + Box_shapes[0]->length + Box_shapes[0]->moving_Box_Z && movingZ > Box_shapes[0]->position[2] - Box_shapes[0]->size + Box_shapes[0]->moving_Box_Z) &&
@@ -1064,14 +1064,20 @@ void drawObjects(int i, int j) {
     if (i == 1) {
         make_Fence(-1, 0, -10.0);
         make_LongFence(1, 1, -10.0);
+        make_Food(-1, 0.5, -10.0);
+
     }
     else if (i == 2) {
         make_Fence(0, 0, -10.0);
         make_Box(-1, -0.5, -10.0,1);
+        make_Food(0, 0.5, -10.0);
+
     }
     else if (i == 3) {    
         make_Fence(1, 0, -10.0);
         make_Box(0, -0.5, -10.0, 1);
+        make_Food(1, 0.5, -10.0);
+
     }
     else if (i == 4) {
         make_LongFence(-1, 1, -10.0);
@@ -1080,14 +1086,20 @@ void drawObjects(int i, int j) {
     else if (i == 5) {
         make_LongFence(0, 1, -10.0);
         make_Fence(-1, 0, -10.0);
+        make_Food(-1, 0.5, -10.0);
+
     }
     else if (i == 6) {
         make_LongFence(1, 1, -10.0);
         make_Fence(0, 0, -10.0);
+        make_Food(0, 0.5, -10.0);
+
     }
     else if (i == 7) {
         make_Box(-1, -0.5, -10.0, 1);
         make_Fence(1, 0, -10.0);
+        make_Food(1, 0.5, -10.0);
+
     }
     else if (i == 8) {
         make_Box(0, -0.5, -10.0, 1);
@@ -1158,7 +1170,6 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
         else
             Box_shapes[i]->moving_Box_Z += ObjSpeed;
     }
-    glutSwapBuffers(); //--- 화면에 출력하기
     glutPostRedisplay(); // 화면 재 출력
     glutTimerFunc(16, TimerFunction, 0); // 타이머함수 재 설정
 }
@@ -1169,8 +1180,6 @@ void CheckCollision() {
             movingZ += ObjSpeed;
             isJumping = 0;
             movingY = 0;
-            std::cout << "c";
-            
         }
     }
     for (auto shapes : Food_shapes) {
