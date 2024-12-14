@@ -615,7 +615,7 @@ void initTextures(GLuint shaderProgramID) {
 
     // Load textures into the texture array
     loadTexture(textureID[0], "Fence.png", GL_TEXTURE0, "Texture0", shaderProgramID); //펜스 사진
-    loadTexture(textureID[1], "chocopi.png", GL_TEXTURE1, "Texture1", shaderProgramID); //음식사진
+    loadTexture(textureID[1], "box.png", GL_TEXTURE1, "Texture1", shaderProgramID); //음식사진
     loadTexture(textureID[2], "sky.jpg", GL_TEXTURE2, "Texture2", shaderProgramID); //바닥 사진 바꿀거면 sky.jpg대신 다른 사진 넣으면 됨
 
 }
