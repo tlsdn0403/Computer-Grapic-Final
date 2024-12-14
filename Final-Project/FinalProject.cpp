@@ -44,7 +44,7 @@ int FenceCount = 0;
 int LongFenceCount = 0;
 int BoxCount = 0;
 int FoodCount = 0;
-int ObjSpeed = 0;
+float ObjSpeed = 0.02;
 void drawScene();
 void initTextures(GLuint shaderProgramID);
 void make_Box(GLfloat x, GLfloat y, GLfloat z);
@@ -658,19 +658,15 @@ void drawScene() {
         shape->draw(shaderProgramID, vboArr);
     }
     for (auto shape : LongFence_shapes) {
-        if (shape->valid == true)
             shape->draw(shaderProgramID, vboArr, textureID);
     }
     for (auto shape : Fence_shapes) {  // 팬스 벡터에 저장한 도형들을 모두 그리는 거  (각 도형 클래스마다 draw 함수를 넣어놨음)
-        if (shape->valid == true)
             shape->draw(shaderProgramID, vboArr, textureID);
     }
     for (auto shape : Box_shapes) {  // 박스 
-        if (shape->valid == true)
             shape->draw(shaderProgramID, vboArr, textureID);
     }
     for (auto shape : Food_shapes) {  // 음식
-        if (shape->valid == true)
             shape->draw(shaderProgramID, vboArr, textureID);
     }
     for (auto shape : Floor_shapes) {  // 바닥 
@@ -806,7 +802,6 @@ void make_Fence(GLfloat x, GLfloat y, GLfloat z) {
     newShape->position[0] = x;
     newShape->position[1] = y;
     newShape->position[2] = z;
-    newShape->valid = true;
     newShape->size = 0.1f;
     newShape->generateFaces(); // 정점 데이터 초기화
     Fence_shapes.push_back(newShape);
@@ -818,7 +813,6 @@ void make_LongFence(GLfloat x, GLfloat y, GLfloat z) {
     newShape->position[0] = x;
     newShape->position[1] = y;
     newShape->position[2] = z;
-    newShape->valid = true;
     newShape->size = 0.1f;
     newShape->generateFaces(); // 정점 데이터 초기화
     LongFence_shapes.push_back(newShape);
@@ -830,7 +824,6 @@ void make_Box(GLfloat x, GLfloat y, GLfloat z) {
     newShape->position[0] = x;
     newShape->position[1] = y;
     newShape->position[2] = z;
-    newShape->valid = true;
     newShape->size = 0.1f;
     newShape->generateFaces(); // 정점 데이터 초기화
     Box_shapes.push_back(newShape);
@@ -844,7 +837,6 @@ void make_Food(GLfloat x, GLfloat y, GLfloat z) {
     newShape->position[1] = y;
     newShape->position[2] = z;
     newShape->size = 0.1f; //사이즈 정해줄 수 있음
-    newShape->valid = true;
     newShape->generateFaces(); // 정점 데이터 초기화
     Food_shapes.push_back(newShape);
 
@@ -1149,7 +1141,7 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
             --FenceCount;
         }
         else
-            Fence_shapes[i]->moving_fence_Z += 0.02 + ObjSpeed;
+            Fence_shapes[i]->moving_fence_Z += ObjSpeed;
     }
     for (int i = FoodCount - 1; i >= 0; --i) {
         if (Food_shapes[i]->moving_Box_Z + -10.00 >= 0.5) {
@@ -1157,7 +1149,7 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
             --FoodCount;
         }
         else
-            Food_shapes[i]->moving_Box_Z += 0.02 + ObjSpeed;
+            Food_shapes[i]->moving_Box_Z += ObjSpeed;
     }
     for (int i = LongFenceCount - 1; i >= 0; --i) {
         if (LongFence_shapes[i]->moving_fence_Z + -10.00 >= 0.5) {
@@ -1165,7 +1157,7 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
             --LongFenceCount;
         }
         else
-            LongFence_shapes[i]->moving_fence_Z += 0.02 + ObjSpeed;
+            LongFence_shapes[i]->moving_fence_Z += ObjSpeed;
     }
     for (int i = BoxCount - 1; i >= 0; --i) {
         if (Box_shapes[i]->moving_Box_Z + -10.00 >= 0.5) {
@@ -1173,7 +1165,7 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
             --BoxCount;
         }
         else
-            Box_shapes[i]->moving_Box_Z += 0.02 + ObjSpeed;
+            Box_shapes[i]->moving_Box_Z += ObjSpeed;
     }
     glutSwapBuffers(); //--- 화면에 출력하기
     glutPostRedisplay(); // 화면 재 출력
