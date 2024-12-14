@@ -824,7 +824,7 @@ void make_Box(GLfloat x, GLfloat y, GLfloat z, GLfloat Length) {
     newShape->position[0] = x;
     newShape->position[1] = y;
     newShape->position[2] = z;
-    newShape->size = 0.5f;
+    newShape->size = 0.3f;
     newShape->length = 1.0f;
     newShape->generateFaces(); // 정점 데이터 초기화
     Box_shapes.push_back(newShape);
@@ -1029,8 +1029,8 @@ void jumping(int value) {
     }
     if (value == 0) {
         //로봇 점프
-        movingY += 0.01f;
-        if (movingY >= 0.5f) {
+        movingY += 0.03f;
+        if (movingY >= 0.8f) {
             //로봇의 y좌표가 일정좌표이면 추락하도록(점프 끝)
             value = 1;
         }
@@ -1069,15 +1069,15 @@ void drawObjects(int i, int j) {
     }
     else if (i == 2) {
         make_Fence(0, 0, -10.0);
-        make_Box(-1, 0, -10.0,1);
+        make_Box(-1, -0.5, -10.0,1);
     }
     else if (i == 3) {    
         make_Fence(1, 0, -10.0);
-        make_Box(0, 0, -10.0, 1);
+        make_Box(0, -0.5, -10.0, 1);
     }
     else if (i == 4) {
         make_LongFence(-1, 1, -10.0);
-        make_Box(1, 0, -10.0, 1);
+        make_Box(1, -0.5, -10.0, 1);
     }
     else if (i == 5) {
         make_LongFence(0, 1, -10.0);
@@ -1088,7 +1088,7 @@ void drawObjects(int i, int j) {
         make_Fence(0, 0, -10.0);
     }
     else if (i == 7) {
-        make_Box(-1, 0, -10.0, 1);
+        make_Box(-1, -0.5, -10.0, 1);
         make_Fence(1, 0, -10.0);
     }
     else if (i == 8) {
@@ -1096,7 +1096,7 @@ void drawObjects(int i, int j) {
         make_LongFence(-1, 1, -10.0);
     }
     else if (i == 9) {
-        make_Box(1, 0, -10.0, 1);
+        make_Box(1, -0.5, -10.0, 1);
         make_LongFence(0, 1, -10.0);
     }
     if (j == 1){
