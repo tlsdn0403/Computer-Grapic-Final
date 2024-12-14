@@ -57,6 +57,7 @@ void walking(int value);
 void jumping();
 void Reshape(int w, int h);
 void InitBuffer();
+void CheckCollision();
 void drawObjects(int i, int j);
 void make_shaderProgram();
 void make_vertexShaders();
@@ -1113,6 +1114,7 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
         return;
     }
     jumping();
+    CheckCollision();
     ++TimeCount;
     if (TimeCount == SpawnTime) {
         TimeCount = 0;
@@ -1156,12 +1158,12 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
     }
     glutSwapBuffers(); //--- 화면에 출력하기
     glutPostRedisplay(); // 화면 재 출력
-    glutTimerFunc(10, TimerFunction, 0); // 타이머함수 재 설정
+    glutTimerFunc(16, TimerFunction, 0); // 타이머함수 재 설정
 }
 
 void CheckCollision() {
     for (auto shapes : Fence_shapes) {
-        if (shapes->moving_fence_Z - 10.00 >= -0.1 && shapes->position[0] == movingX) {
+        if (shapes->moving_fence_Z+shapes->position[2] >= movingZ-0.02 && shapes->position[0] == movingX) {
             movingZ += ObjSpeed;
             isJumping = 0;
             movingY = 0;
