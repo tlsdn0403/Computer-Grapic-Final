@@ -56,7 +56,7 @@ void make_Fence(GLfloat x, GLfloat y, GLfloat z);
 void make_LongFence(GLfloat x, GLfloat y, GLfloat z);
 void make_Food(GLfloat x, GLfloat y, GLfloat z);
 void make_Floor(GLfloat x, GLfloat y, GLfloat z);
-void walking(int value);
+void walking();
 void jumping();
 void Reshape(int w, int h);
 void InitBuffer();
@@ -68,7 +68,7 @@ void make_fragmentShaders();
 void Keyboard(unsigned char key, int x, int y);
 void loadTexture(GLuint textureID, const char* filePath, GLenum textureUnit, const char* uniformName, GLuint shaderProgramID);
 void Cleanup();
-void drawScoreBoard(float x, float y, const std::string& text);
+void renderBitmapString(float x, float y, void* font, const std::string& string);
 void TimerFunction(int value);
 void getOpenGLMouseCoords(int mouseX, int mouseY, float& openglX, float& openglY) {
     openglX = (static_cast<float>(mouseX) / glutGet(GLUT_WINDOW_WIDTH)) * 2.0f - 1.0f; //X
@@ -658,7 +658,6 @@ void drawScene() {
     glm::mat4 view = glm::lookAt(cameraPos, cameraDirection, cameraUp);
     unsigned int viewLocation = glGetUniformLocation(shaderProgramID, "viewTransform");
     glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
-    drawScoreBoard(0.8f, 0.9f, "Score: " + std::to_string(score));
 
     for (auto shape : shapes) {  // shapes 벡터에 저장한 도형들을 모두 그리는 거  (각 도형 클래스마다 draw 함수를 넣어놨음)
         shape->draw(shaderProgramID, vboArr);
@@ -679,6 +678,10 @@ void drawScene() {
     for (auto shape : Floor_shapes) {  // 바닥 
         shape->draw(shaderProgramID, vboArr, textureID);
     }
+
+    std::string scoreStr = "Score: " + std::to_string(score);
+    renderBitmapString(0.8f, -0.8f, GLUT_BITMAP_HELVETICA_12, scoreStr);
+
     glutSwapBuffers();
 }
 
@@ -1202,10 +1205,15 @@ void CheckCollision() {
         }
     }
 }
+void renderBitmapString(float x, float y, void* font, const std::string& string)
+{
+    glPushAttrib(GL_ALL_ATTRIB_BITS);  // 상태 저장
 
-void drawScoreBoard(float x, float y, const std::string& text) {
-    glRasterPos2f(x, y); // 텍스트의 위치 설정
-    for (char c : text) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c); // 글자 렌더링
+    glRasterPos2f(x, y);  // 텍스트 위치 설정
+    for (char c : string)  // 문자열을 한 글자씩 그리기
+    {
+        glutBitmapCharacter(font, c);
     }
-}   
+
+    glPopAttrib();  // 상태 복원
+}

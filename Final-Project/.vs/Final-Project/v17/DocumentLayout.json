@@ -81,34 +81,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 16,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FinalProject.cpp",
-              "DocumentMoniker": "C:\\Users\\\uAE40\uC815\uD658\\Desktop\\Computer-Grapic-Final\\Computer-Grapic-Final\\Final-Project\\FinalProject.cpp",
-              "RelativeDocumentMoniker": "FinalProject.cpp",
-              "ToolTip": "C:\\Users\\\uAE40\uC815\uD658\\Desktop\\Computer-Grapic-Final\\Computer-Grapic-Final\\Final-Project\\FinalProject.cpp",
-              "RelativeToolTip": "FinalProject.cpp",
-              "ViewState": "AgIAAFgDAAAAAAAAAAApwGkDAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-11-18T10:26:20.942Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "2023182007_main.cpp",
-              "DocumentMoniker": "C:\\Users\\\uAE40\uC815\uD658\\Downloads\\\uCEF4\uADF83\uBC182023182007\uAE40\uC815\uD658\\2023182007_main.cpp",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\Downloads\\\uCEF4\uADF83\uBC182023182007\uAE40\uC815\uD658\\2023182007_main.cpp",
-              "ToolTip": "C:\\Users\\\uAE40\uC815\uD658\\Downloads\\\uCEF4\uADF83\uBC182023182007\uAE40\uC815\uD658\\2023182007_main.cpp",
-              "RelativeToolTip": "..\\..\\..\\..\\Downloads\\\uCEF4\uADF83\uBC182023182007\uAE40\uC815\uD658\\2023182007_main.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-14T23:26:09.272Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:140:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -168,6 +142,32 @@
             {
               "$type": "Bookmark",
               "Name": "ST:132:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "2023182007_main.cpp",
+              "DocumentMoniker": "C:\\Users\\\uAE40\uC815\uD658\\Downloads\\\uCEF4\uADF83\uBC182023182007\uAE40\uC815\uD658\\2023182007_main.cpp",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\Downloads\\\uCEF4\uADF83\uBC182023182007\uAE40\uC815\uD658\\2023182007_main.cpp",
+              "ToolTip": "C:\\Users\\\uAE40\uC815\uD658\\Downloads\\\uCEF4\uADF83\uBC182023182007\uAE40\uC815\uD658\\2023182007_main.cpp",
+              "RelativeToolTip": "..\\..\\..\\..\\Downloads\\\uCEF4\uADF83\uBC182023182007\uAE40\uC815\uD658\\2023182007_main.cpp",
+              "ViewState": "AgIAAPkAAAAAAAAAAAApwAwBAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-14T23:50:04.043Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FinalProject.cpp",
+              "DocumentMoniker": "C:\\Users\\\uAE40\uC815\uD658\\Desktop\\Computer-Grapic-Final\\Computer-Grapic-Final\\Final-Project\\FinalProject.cpp",
+              "RelativeDocumentMoniker": "FinalProject.cpp",
+              "ToolTip": "C:\\Users\\\uAE40\uC815\uD658\\Desktop\\Computer-Grapic-Final\\Computer-Grapic-Final\\Final-Project\\FinalProject.cpp*",
+              "RelativeToolTip": "FinalProject.cpp*",
+              "ViewState": "AgIAAJICAAAAAAAAAAApwKYCAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-11-18T10:26:20.942Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
