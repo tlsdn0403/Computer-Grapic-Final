@@ -569,7 +569,7 @@ int main(int argc, char** argv) {
     InitBuffer();
     //--- Register callback functions
     
-    drawObjects(1, 0);
+    drawObjects(8, 0);
     initTextures(shaderProgramID);
     glutDisplayFunc(drawScene);
     glutReshapeFunc(Reshape);
@@ -824,7 +824,7 @@ void make_Box(GLfloat x, GLfloat y, GLfloat z, GLfloat Length) {
     newShape->position[0] = x;
     newShape->position[1] = y;
     newShape->position[2] = z;
-    newShape->size = 0.3f;
+    newShape->size = 0.5f;
     newShape->length = 1.0f;
     newShape->generateFaces(); // 정점 데이터 초기화
     Box_shapes.push_back(newShape);
@@ -1092,7 +1092,7 @@ void drawObjects(int i, int j) {
         make_Fence(1, 0, -10.0);
     }
     else if (i == 8) {
-        make_Box(0, 0, -10.0, 1);
+        make_Box(0, -0.5, -10.0, 1);
         make_LongFence(-1, 1, -10.0);
     }
     else if (i == 9) {
@@ -1161,8 +1161,12 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
 
 void CheckCollision() {
     for (auto shapes : Fence_shapes) {
-        if (shapes->moving_fence_Z - 10.00 >= 0.1) {
-
+        if (shapes->moving_fence_Z - 10.00 >= 0.1 && shapes->position[1] == movingX) {
+            if (movingY + -0.9 <= shapes->moving_fence_Y - shapes->size) {
+                movingZ += ObjSpeed;
+                isJumping = 0;
+                movingY = 0;
+            }
         }
     }
     for (auto shapes : Food_shapes) {
