@@ -1,13 +1,1 @@
-﻿  FinalProject.cpp
-C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\FinalProject.cpp(49,16): warning C4305: '초기화 중': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\FinalProject.cpp(551,16): warning C4244: '초기화 중': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\FinalProject.cpp(647,15): warning C4101: 'projection' :참조되지 않은 지역 변수입니다.
-C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\FinalProject.cpp(885,20): warning C4305: '+=': 'double'에서 'GLfloat'(으)로 잘립니다.
-C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\FinalProject.cpp(889,20): warning C4305: '-=': 'double'에서 'GLfloat'(으)로 잘립니다.
-C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\FinalProject.cpp(897,20): warning C4305: '+=': 'double'에서 'GLfloat'(으)로 잘립니다.
-C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\FinalProject.cpp(902,20): warning C4305: '-=': 'double'에서 'GLfloat'(으)로 잘립니다.
-C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\FinalProject.cpp(1031,25): warning C4244: '+=': 'double'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\FinalProject.cpp(1138,25): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\FinalProject.cpp(1180,17): warning C4552: '-': 식의 결과가 사용되지 않습니다.
-  LINK : C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\x64\Debug\Final-Project.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
-  Final-Project.vcxproj -> C:\Users\tlsdn\OneDrive\바탕 화면\컴퓨터 그래픽스\Computer-Grapic-Final\Final-Project\x64\Debug\Final-Project.exe
+﻿  Final-Project.vcxproj -> C:\Users\김정환\Desktop\Computer-Grapic-Final\Computer-Grapic-Final\Final-Project\x64\Debug\Final-Project.exe

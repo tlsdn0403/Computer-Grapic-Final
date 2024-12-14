@@ -14,6 +14,7 @@
 #include"Floor.h"
 #include"longFence.h"
 #include"glmFiles.hpp"
+#include <string>
 
 std::random_device rd;  // 시드로 사용할 난수 생성 장치
 std::mt19937 gen(rd());
@@ -46,6 +47,7 @@ int BoxCount = 0;
 int FoodCount = 0;
 int jumpstate = 0;
 int walkstate = 0;
+int score = 0;
 float ObjSpeed = 0.02;
 void drawScene();
 void initTextures(GLuint shaderProgramID);
@@ -66,6 +68,7 @@ void make_fragmentShaders();
 void Keyboard(unsigned char key, int x, int y);
 void loadTexture(GLuint textureID, const char* filePath, GLenum textureUnit, const char* uniformName, GLuint shaderProgramID);
 void Cleanup();
+void drawScoreBoard(float x, float y, const std::string& text);
 void TimerFunction(int value);
 void getOpenGLMouseCoords(int mouseX, int mouseY, float& openglX, float& openglY) {
     openglX = (static_cast<float>(mouseX) / glutGet(GLUT_WINDOW_WIDTH)) * 2.0f - 1.0f; //X
@@ -655,7 +658,7 @@ void drawScene() {
     glm::mat4 view = glm::lookAt(cameraPos, cameraDirection, cameraUp);
     unsigned int viewLocation = glGetUniformLocation(shaderProgramID, "viewTransform");
     glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
-
+    drawScoreBoard(0.8f, 0.9f, "Score: " + std::to_string(score));
 
     for (auto shape : shapes) {  // shapes 벡터에 저장한 도형들을 모두 그리는 거  (각 도형 클래스마다 draw 함수를 넣어놨음)
         shape->draw(shaderProgramID, vboArr);
@@ -670,6 +673,7 @@ void drawScene() {
             shape->draw(shaderProgramID, vboArr, textureID);
     }
     for (auto shape : Food_shapes) {  // 음식
+        if(shape->valid == true)
             shape->draw(shaderProgramID, vboArr, textureID);
     }
     for (auto shape : Floor_shapes) {  // 바닥 
@@ -842,6 +846,7 @@ void make_Food(GLfloat x, GLfloat y, GLfloat z) {
     newShape->position[2] = z;
     newShape->size = 0.1f; //사이즈 정해줄 수 있음
     newShape->generateFaces(); // 정점 데이터 초기화
+    newShape->valid = true;
     Food_shapes.push_back(newShape);
     ++FoodCount;
     glutPostRedisplay();
@@ -1170,7 +1175,6 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
         else
             Box_shapes[i]->moving_Box_Z += ObjSpeed;
     }
-
     glutPostRedisplay(); // 화면 재 출력
     glutTimerFunc(16, TimerFunction, 0); // 타이머함수 재 설정
 }
@@ -1183,19 +1187,25 @@ void CheckCollision() {
         if (shapes->moving_fence_Z+shapes->position[2] + shapes->size >= movingZ && shapes->moving_fence_Z + shapes->position[2] - shapes->size <= movingZ && shapes->position[0] == movingX && movingY<=0.2f ) {
             movingZ += ObjSpeed;
             std::cout << "c";
-            
-
         }
     }
     for (auto shapes : Food_shapes) {
-        if (shapes->moving_Box_Z - 10.00 >= 0.1) {
-
+        if (shapes->moving_Box_Z + shapes->position[2] + shapes->size >= movingZ && shapes->moving_Box_Z + shapes->position[2] - shapes->size <= movingZ && shapes->position[0] == movingX && shapes->valid == true) {
+            score += 100;
+            shapes->valid = false;
         }
     }
     for (auto shapes : LongFence_shapes) {
-        if (shapes->moving_fence_Z - 10.00 >= 0.1) {
-
+        if (shapes->moving_fence_Z + shapes->position[2] + shapes->size >= movingZ && shapes->moving_fence_Z + shapes->position[2] - shapes->size <= movingZ && shapes->position[0] == movingX && movingY >= 0.5f) {
+            movingZ += ObjSpeed;
+            std::cout << "c";
         }
     }
-
 }
+
+void drawScoreBoard(float x, float y, const std::string& text) {
+    glRasterPos2f(x, y); // 텍스트의 위치 설정
+    for (char c : text) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c); // 글자 렌더링
+    }
+}   
