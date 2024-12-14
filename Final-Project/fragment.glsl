@@ -9,6 +9,7 @@ uniform sampler2D Textures[];
 uniform sampler2D Texture0;  
 uniform sampler2D Texture1;  
 uniform sampler2D Texture2;  
+uniform sampler2D Texture3;  
 uniform int selectedTexture; // 몇번쨰의 텍스처를 사용할 것인지
 
 // Output color
@@ -24,6 +25,9 @@ void main() {
     }
     else if(selectedTexture==2){
         FragColor = texture(Texture2, TexCoord);
+    }
+     else if(selectedTexture==3){
+        FragColor = texture(Texture3, TexCoord);
     }
     else {
         // 텍스처를 사용하지 않는 경우 기본 색상

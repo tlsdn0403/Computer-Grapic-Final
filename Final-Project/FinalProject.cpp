@@ -52,6 +52,7 @@ void make_Fence(GLfloat x, GLfloat y, GLfloat z);
 void make_LongFence(GLfloat x, GLfloat y, GLfloat z);
 void make_Food(GLfloat x, GLfloat y, GLfloat z);
 void make_Floor(GLfloat x, GLfloat y, GLfloat z);
+void make_Box(GLfloat x, GLfloat y, GLfloat z, GLfloat Length);
 void walking(int value);
 void jumping(int value);
 void Reshape(int w, int h);
@@ -530,6 +531,7 @@ std::vector<Food*> Food_shapes;
 std::vector<Floor*> Floor_shapes;
 std::vector<longFence*> LongFence_shapes;
 
+
 std::vector<Shape*> shapes_line;
 
 bool drawWireframe = false;
@@ -568,7 +570,7 @@ int main(int argc, char** argv) {
     make_shaderProgram();
     InitBuffer();
     //--- Register callback functions
-    
+    make_Box(1, 0, -0, 1);
     drawObjects(1, 0);
     initTextures(shaderProgramID);
     glutDisplayFunc(drawScene);
@@ -629,6 +631,7 @@ void initTextures(GLuint shaderProgramID) {
     loadTexture(textureID[0], "Fence.png", GL_TEXTURE0, "Texture0", shaderProgramID); //펜스 사진
     loadTexture(textureID[1], "chocopi.png", GL_TEXTURE1, "Texture1", shaderProgramID); //음식사진
     loadTexture(textureID[2], "sky.jpg", GL_TEXTURE2, "Texture2", shaderProgramID); //바닥 사진 바꿀거면 sky.jpg대신 다른 사진 넣으면 됨
+    loadTexture(textureID[3], "Box.png", GL_TEXTURE3, "Texture3", shaderProgramID); //3번 텍스처에 박스 저장
 
 }
 
@@ -851,6 +854,18 @@ void make_Floor(GLfloat x, GLfloat y, GLfloat z) {
     newShape->size = 3; //사이즈 정해줄 수 있음
     newShape->generateFaces(); // 정점 데이터 초기화
     Floor_shapes.push_back(newShape);
+
+    glutPostRedisplay();
+}
+void make_Box(GLfloat x, GLfloat y, GLfloat z, GLfloat Length) {
+    Box* newShape = new Box();
+    newShape->position[0] = x;
+    newShape->position[1] = y;
+    newShape->position[2] = z;
+    newShape->size = 0.3f; //사이즈 정해줄 수 있음
+    newShape->length = 1.0f;
+    newShape->generateFaces(); // 정점 데이터 초기화
+    Box_shapes.push_back(newShape);
 
     glutPostRedisplay();
 }

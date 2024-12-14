@@ -11,32 +11,32 @@ void Box::generateFaces() {
     // 각 면의 정점 데이터를 초기화
     // Front Face (Z+)
     faces[0] = {  // 바닥
-    position[0] - size, position[1] - size , position[2] + size,  // v1 (Top-left)
-    position[0] + size, position[1] - size , position[2] + size,  // v2 (Top-right)
+    position[0] - size, position[1] - size , position[2] + size+length,  // v1 (Top-left)
+    position[0] + size, position[1] - size , position[2] + size+length,  // v2 (Top-right)
     position[0] - size, position[1] - size , position[2] - size,  // v3 (Bottom-left)
     position[0] + size, position[1] - size , position[2] - size   // v4 (Bottom-right)
     };
 
     faces[1] = {  // 오 옆면
-    position[0] + size, position[1] - size , position[2] + size,  // v1 (Top-left)
+    position[0] + size, position[1] - size , position[2] + size + length ,  // v1 (Top-left)
     position[0] + size, position[1] - size, position[2] - size,  // v2 (Top-right)
-    position[0] + size, position[1] + size , position[2] + size,  // v3 (Bottom-left)
+    position[0] + size, position[1] + size , position[2] + size+length,  // v3 (Bottom-left)
     position[0] + size, position[1] + size , position[2] - size   // v4 (Bottom-right)
     };
 
 
     faces[2] = {  // 앞면
-    position[0] - size, position[1] - size , position[2] + size,  // v1 (Top-left)
-    position[0] + size, position[1] - size, position[2] + size,  // v2 (Top-right)
-    position[0] - size, position[1] + size , position[2] + size,  // v3 (Bottom-left)
-    position[0] + size, position[1] + size , position[2] + size   // v4 (Bottom-right)
+    position[0] - size, position[1] - size , position[2] + size + length,  // v1 (Top-left)
+    position[0] + size, position[1] - size, position[2] + size + length,  // v2 (Top-right)
+    position[0] - size, position[1] + size , position[2] + size + length,  // v3 (Bottom-left)
+    position[0] + size, position[1] + size , position[2] + size + length   // v4 (Bottom-right)
     };
 
 
     faces[3] = {  // 오 옆면
-    position[0] - size, position[1] - size, position[2] + size,  // v1 (Top-left)
+    position[0] - size, position[1] - size, position[2] + size + length,  // v1 (Top-left)
     position[0] - size, position[1] - size, position[2] - size,  // v2 (Top-right)
-    position[0] - size, position[1] + size , position[2] + size,  // v3 (Bottom-left)
+    position[0] - size, position[1] + size , position[2] + size + length,  // v3 (Bottom-left)
     position[0] - size, position[1] + size , position[2] - size   // v4 (Bottom-right)
     };
 
@@ -50,8 +50,8 @@ void Box::generateFaces() {
 
 
     faces[5] = {  // 윗면
-    position[0] - size, position[1] + size, position[2] + size,  // v1 (Top-left)
-    position[0] + size, position[1] + size , position[2] + size,  // v2 (Top-right)
+    position[0] - size, position[1] + size, position[2] + size + length,  // v1 (Top-left)
+    position[0] + size, position[1] + size , position[2] + size + length,  // v2 (Top-right)
     position[0] - size, position[1] + size , position[2] - size,  // v3 (Bottom-left)
     position[0] + size, position[1] + size, position[2] - size   // v4 (Bottom-right)
     };
@@ -99,10 +99,10 @@ void Box::generateFaces() {
 
 void Box::draw(GLuint shaderProgramID, GLuint vbo[], GLuint textureID[]) {
     glUseProgram(shaderProgramID);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, textureID[1]);
-    setSelectedTexture(shaderProgramID, 1);
-    glUniform1i(glGetUniformLocation(shaderProgramID, "Texture1"), 1);
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, textureID[3]);
+    setSelectedTexture(shaderProgramID, 3);
+    glUniform1i(glGetUniformLocation(shaderProgramID, "Texture3"), 3);
     for (int i = 0; i < 6; i++) {
         if (i >= faces.size()) {
             std::cerr << "Error: faces vector index out of range." << std::endl;
