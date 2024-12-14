@@ -47,7 +47,6 @@ int FoodCount = 0;
 float ObjSpeed = 0.02;
 void drawScene();
 void initTextures(GLuint shaderProgramID);
-void make_Box(GLfloat x, GLfloat y, GLfloat z);
 void make_Fence(GLfloat x, GLfloat y, GLfloat z);
 void make_LongFence(GLfloat x, GLfloat y, GLfloat z);
 void make_Food(GLfloat x, GLfloat y, GLfloat z);
@@ -570,7 +569,7 @@ int main(int argc, char** argv) {
     make_shaderProgram();
     InitBuffer();
     //--- Register callback functions
-    make_Box(1, 0, -0, 1);
+    make_Box(1, -0.5, -0, 1);
     drawObjects(1, 0);
     initTextures(shaderProgramID);
     glutDisplayFunc(drawScene);
@@ -822,18 +821,6 @@ void make_LongFence(GLfloat x, GLfloat y, GLfloat z) {
 
     glutPostRedisplay();
 }
-void make_Box(GLfloat x, GLfloat y, GLfloat z) {
-    Box* newShape = new Box();
-    newShape->position[0] = x;
-    newShape->position[1] = y;
-    newShape->position[2] = z;
-    newShape->size = 0.1f;
-    newShape->generateFaces(); // 정점 데이터 초기화
-    Box_shapes.push_back(newShape);
-
-    glutPostRedisplay();
-}
-
 void make_Food(GLfloat x, GLfloat y, GLfloat z) {
     Food* newShape = new Food();
     newShape->position[0] = x;
@@ -862,8 +849,8 @@ void make_Box(GLfloat x, GLfloat y, GLfloat z, GLfloat Length) {
     newShape->position[0] = x;
     newShape->position[1] = y;
     newShape->position[2] = z;
-    newShape->size = 0.3f; //사이즈 정해줄 수 있음
-    newShape->length = 1.0f;
+    newShape->size = 0.2f; //사이즈 정해줄 수 있음
+    newShape->length = Length;
     newShape->generateFaces(); // 정점 데이터 초기화
     Box_shapes.push_back(newShape);
 
@@ -1043,15 +1030,16 @@ void jumping(int value) {
     }
     if (value == 0) {
         //로봇 점프
-        movingY += 0.01f;
-        if (movingY >= 0.5f) {
+        movingY += 0.03f;
+        if (movingY >= 1.0f) {
             //로봇의 y좌표가 일정좌표이면 추락하도록(점프 끝)
             value = 1;
         }
     }
     else {
         //착지
-        movingY -= 0.01f;
+        
+        movingY -= 0.03f;
         if (movingY <= 0.0f) {
             movingY = 0;
             isJumping = 0;
@@ -1079,19 +1067,19 @@ void drawObjects(int i, int j) {
     else if (i == 2) {
         make_Fence(0, 0, -10.0);
         ++FenceCount;
-        make_Box(-1, 0, -10.0);
+        make_Box(-1, 0, -10.0,1);
         ++BoxCount;
     }
     else if (i == 3) {    
         make_Fence(1, 0, -10.0);
         ++FenceCount;
-        make_Box(0, 0, -10.0);
+        make_Box(0, 0, -10.0,1);
         ++BoxCount;
     }
     else if (i == 4) {
         make_LongFence(-1, 1, -10.0);
         ++LongFenceCount;
-        make_Box(1, 0, -10.0);
+        make_Box(1, 0, -10.0,1);
         ++BoxCount;
     }
     else if (i == 5) {
@@ -1107,19 +1095,19 @@ void drawObjects(int i, int j) {
         ++FenceCount;
     }
     else if (i == 7) {
-        make_Box(-1, 0, -10.0);
+        make_Box(-1, 0, -10.0,1);
         ++BoxCount;
         make_Fence(1, 0, -10.0);
         ++FenceCount;
     }
     else if (i == 8) {
-        make_Box(0, 0, -10.0);
+        make_Box(0, 0, -10.0,1);
         ++BoxCount;
         make_LongFence(-1, 1, -10.0);
         ++LongFenceCount;
     }
     else if (i == 9) {
-        make_Box(1, 0, -10.0);
+        make_Box(1, 0, -10.0,1);
         ++BoxCount;
         make_LongFence(0, 1, -10.0);
         ++LongFenceCount;
