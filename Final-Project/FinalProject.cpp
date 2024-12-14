@@ -43,6 +43,7 @@ int robot_dir = 0;
 int FenceCount = 0;
 int LongFenceCount = 0;
 int BoxCount = 0;
+int BoxCountObs = 0;
 int FoodCount = 0;
 float ObjSpeed = 0.02;
 void drawScene();
@@ -569,7 +570,7 @@ int main(int argc, char** argv) {
     make_shaderProgram();
     InitBuffer();
     //--- Register callback functions
-    make_Box(1, -0.5, -0, 1);
+
     drawObjects(1, 0);
     initTextures(shaderProgramID);
     glutDisplayFunc(drawScene);
@@ -807,7 +808,7 @@ void make_Fence(GLfloat x, GLfloat y, GLfloat z) {
     newShape->size = 0.1f;
     newShape->generateFaces(); // 정점 데이터 초기화
     Fence_shapes.push_back(newShape);
-  
+    ++FenceCount;
     glutPostRedisplay();
 }
 void make_LongFence(GLfloat x, GLfloat y, GLfloat z) {
@@ -818,7 +819,7 @@ void make_LongFence(GLfloat x, GLfloat y, GLfloat z) {
     newShape->size = 0.1f;
     newShape->generateFaces(); // 정점 데이터 초기화
     LongFence_shapes.push_back(newShape);
-
+    ++LongFenceCount;
     glutPostRedisplay();
 }
 void make_Food(GLfloat x, GLfloat y, GLfloat z) {
@@ -829,7 +830,7 @@ void make_Food(GLfloat x, GLfloat y, GLfloat z) {
     newShape->size = 0.1f; //사이즈 정해줄 수 있음
     newShape->generateFaces(); // 정점 데이터 초기화
     Food_shapes.push_back(newShape);
-
+    ++FoodCount;
     glutPostRedisplay();
 }
 void make_Floor(GLfloat x, GLfloat y, GLfloat z) {
@@ -853,7 +854,8 @@ void make_Box(GLfloat x, GLfloat y, GLfloat z, GLfloat Length) {
     newShape->length = Length;
     newShape->generateFaces(); // 정점 데이터 초기화
     Box_shapes.push_back(newShape);
-
+    ++BoxCount;
+    ++BoxCountObs;
     glutPostRedisplay();
 }
 void Keyboard(unsigned char key, int x, int y) {
@@ -1038,12 +1040,19 @@ void jumping(int value) {
     }
     else {
         //착지
-        
         movingY -= 0.03f;
+
+        if ((movingX<Box_shapes[0]->position[0] + Box_shapes[0]->size && movingX > Box_shapes[0]->position[0] - Box_shapes[0]->size) && //x좌표
+            (movingZ<Box_shapes[0]->position[2] + Box_shapes[0]->size + Box_shapes[0]->length + Box_shapes[0]->moving_Box_Z && movingZ > Box_shapes[0]->position[2] - Box_shapes[0]->size + Box_shapes[0]->moving_Box_Z) &&
+            movingY - 0.9f <= Box_shapes[0]->position[1] + Box_shapes[0]->size) { //y좌표
+            std::cout << "박스 밟음";
+            movingY = Box_shapes[0]->position[1] + Box_shapes[0]->size + 0.9f;
+        }
         if (movingY <= 0.0f) {
             movingY = 0;
             isJumping = 0;
-        } 
+        }
+        
     }
     glutPostRedisplay();
     glutTimerFunc(12, jumping, value);
@@ -1060,69 +1069,56 @@ void drawObjects(int i, int j) {
     // 오브젝트들 그리는 함수
     if (i == 1) {
         make_Fence(-1, 0, -10.0);
-        ++FenceCount;
+        
         make_LongFence(1, 1, -10.0);
-        ++LongFenceCount;
+ 
     }
     else if (i == 2) {
         make_Fence(0, 0, -10.0);
-        ++FenceCount;
-        make_Box(-1, 0, -10.0,1);
-        ++BoxCount;
+  
+        make_Box(0, -0.5f, -10.0,1);
+        
     }
     else if (i == 3) {    
         make_Fence(1, 0, -10.0);
-        ++FenceCount;
-        make_Box(0, 0, -10.0,1);
-        ++BoxCount;
+        make_Box(0, -0.5f, -10.0,1);
     }
     else if (i == 4) {
         make_LongFence(-1, 1, -10.0);
-        ++LongFenceCount;
-        make_Box(1, 0, -10.0,1);
-        ++BoxCount;
+        make_Box(1, -0.5f, -10.0,1);
     }
     else if (i == 5) {
         make_LongFence(0, 1, -10.0);
-        ++LongFenceCount;
         make_Fence(-1, 0, -10.0);
-        ++FenceCount;
+
     }
     else if (i == 6) {
         make_LongFence(1, 1, -10.0);
-        ++LongFenceCount;
         make_Fence(0, 0, -10.0);
-        ++FenceCount;
+
     }
     else if (i == 7) {
-        make_Box(-1, 0, -10.0,1);
-        ++BoxCount;
+        make_Box(0, -0.5f, -10.0,1);
         make_Fence(1, 0, -10.0);
-        ++FenceCount;
+
     }
     else if (i == 8) {
-        make_Box(0, 0, -10.0,1);
-        ++BoxCount;
+        make_Box(0, -0.5f, -10.0,1);
         make_LongFence(-1, 1, -10.0);
-        ++LongFenceCount;
     }
     else if (i == 9) {
-        make_Box(1, 0, -10.0,1);
-        ++BoxCount;
+        make_Box(1, -0.5f, -10.0,1);
         make_LongFence(0, 1, -10.0);
-        ++LongFenceCount;
     }
     if (j == 1){
         make_Food(-1, -0.5, -8.0);
-        ++FoodCount;
     }
     else if (j == 2){
         make_Food(0, -0.5, -8.0);
-        ++FoodCount;
+        
     }
     else if (j == 3){
         make_Food(1, -0.5, -8.0);
-        ++FoodCount;
     }
     make_robot(0, 0, 0);
     make_Floor(0, -1.0, -5.0);
