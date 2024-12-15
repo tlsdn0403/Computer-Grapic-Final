@@ -65,6 +65,7 @@ void drawObjects(int i, int j);
 void make_shaderProgram();
 void make_vertexShaders();
 void make_fragmentShaders();
+void make_robot(GLfloat x, GLfloat y, GLfloat z);
 void Keyboard(unsigned char key, int x, int y);
 void loadTexture(GLuint textureID, const char* filePath, GLenum textureUnit, const char* uniformName, GLuint shaderProgramID);
 void Cleanup();
@@ -574,8 +575,8 @@ int main(int argc, char** argv) {
     make_shaderProgram();
     InitBuffer();
     //--- Register callback functions
-    
-    drawObjects(1, 0);
+    make_robot(0, 0, 0);
+    make_Floor(0, -1.0, -5.0);
     initTextures(shaderProgramID);
     glutDisplayFunc(drawScene);
     glutReshapeFunc(Reshape);
@@ -816,7 +817,6 @@ void make_Fence(GLfloat x, GLfloat y, GLfloat z) {
     newShape->generateFaces(); // 정점 데이터 초기화
     Fence_shapes.push_back(newShape);
     ++FenceCount;
-    glutPostRedisplay();
 }
 void make_LongFence(GLfloat x, GLfloat y, GLfloat z) {
     longFence* newShape = new longFence();
@@ -827,7 +827,6 @@ void make_LongFence(GLfloat x, GLfloat y, GLfloat z) {
     newShape->generateFaces(); // 정점 데이터 초기화
     LongFence_shapes.push_back(newShape);
     ++LongFenceCount;
-    glutPostRedisplay();
 }
 void make_Box(GLfloat x, GLfloat y, GLfloat z, GLfloat Length) {
     Box* newShape = new Box();
@@ -839,7 +838,6 @@ void make_Box(GLfloat x, GLfloat y, GLfloat z, GLfloat Length) {
     newShape->generateFaces(); // 정점 데이터 초기화
     Box_shapes.push_back(newShape);
     ++BoxCount;
-    glutPostRedisplay();
 }
 
 void make_Food(GLfloat x, GLfloat y, GLfloat z) {
@@ -852,7 +850,6 @@ void make_Food(GLfloat x, GLfloat y, GLfloat z) {
     newShape->valid = true;
     Food_shapes.push_back(newShape);
     ++FoodCount;
-    glutPostRedisplay();
 }
 void make_Floor(GLfloat x, GLfloat y, GLfloat z) {
     Floor* newShape = new Floor();
@@ -1126,8 +1123,8 @@ void drawObjects(int i, int j) {
     else if (j == 3){
         make_Food(1, -0.5, -8.0);
     }
-    make_robot(0, 0, 0);
-    make_Floor(0, -1.0, -5.0);
+    
+    glutPostRedisplay();
 }
 
 void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
@@ -1136,6 +1133,9 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
     }
     if (movingZ >= 1.2) {
         movingY -= 0.2f;
+        if (movingY < -4.0f) {
+            gamePlay = false;
+        }
     }
     walking();
     jumping();
@@ -1186,9 +1186,6 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
 }
 
 void CheckCollision() {
-    if (movingZ > 1.4f) {
-        movingY - 2.0f;
-    }
     for (auto shapes : Fence_shapes) {
         if (shapes->moving_fence_Z+shapes->position[2] + shapes->size >= movingZ && shapes->moving_fence_Z + shapes->position[2] - shapes->size <= movingZ && shapes->position[0] == movingX && movingY<=0.2f ) {
             movingZ += ObjSpeed;
@@ -1206,6 +1203,12 @@ void CheckCollision() {
             movingZ += ObjSpeed;
             std::cout << "c";
         }
+    }
+    for (auto shape : Box_shapes) {
+        if ((movingX<shape->position[0] + shape->size && movingX > shape->position[0] - shape->size) &&
+            (movingZ<shape->position[2] + shape->size + shape->length + shape->moving_Box_Z && movingZ > shape->position[2] - shape->size + shape->moving_Box_Z) &&
+            movingY <=0.2f)
+            movingZ += ObjSpeed;
     }
 }
 void renderBitmapString(float x, float y, void* font, const std::string& string)
