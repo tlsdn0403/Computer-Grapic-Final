@@ -1134,6 +1134,9 @@ void TimerFunction(int value) { // 시간이 지남에 따라 객체들 이동
     if (!gamePlay) { //참이면 실행 거짓이면 종료
         return;
     }
+    if (movingZ >= 1.2) {
+        movingY -= 0.2f;
+    }
     walking();
     jumping();
     CheckCollision();
